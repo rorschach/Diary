@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".activities.ViewActivity">
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+
+            <me.rorschach.diary.views.VerticalTextView
+                android:id="@+id/end"
+                style="@style/DiaryBodyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+            <me.rorschach.diary.views.VerticalTextView
+                android:id="@+id/date"
+                style="@style/DiaryBodyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+            <me.rorschach.diary.views.MultipleVerticalTextView
+                android:id="@+id/body"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:MultiTextSize="@dimen/normal_text_size"/>
+
+            <me.rorschach.diary.views.VerticalTextView
+                android:id="@+id/title"
+                style="@style/DiaryBodyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</RelativeLayout>

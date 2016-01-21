@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "me.rorschach.diary"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.+'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    apt 'com.github.Raizlabs.DBFlow:dbflow-processor:3.0.0-beta1'
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:3.0.0-beta1"
+    compile "com.github.Raizlabs.DBFlow:dbflow:3.0.0-beta1"
+
+    testCompile 'junit:junit:4.12'
+//    testCompile 'com.android.support.test:runner:0.3'
+//    testCompile 'com.android.support.test:rules:0.3'
+//    testCompile 'com.android.support.test.espresso:espresso-core:2.2'
+//    testCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+//    testCompile 'com.android.support.test.espresso:espresso-contrib:2.0'
+}

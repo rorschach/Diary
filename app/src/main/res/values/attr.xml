@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="VerticalTextView">
+        <attr name="font" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MultipleVerticalTextView">
+        <attr name="MultiTextSize" format="dimension" />
+        <attr name="MultiTextBold" format="boolean" />
+        <attr name="MultiTextLineWidth" format="integer" />
+        <attr name="MultiTextFontHeight" format="integer" />
+    </declare-styleable>
+</resources>
