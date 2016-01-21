@@ -1,7 +1,5 @@
 package me.rorschach.diary.utils;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.runtime.DBTransactionInfo;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
 import com.raizlabs.android.dbflow.runtime.transaction.BaseTransaction;
@@ -12,6 +10,7 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import java.util.ArrayList;
 import java.util.List;
 
+import hugo.weaving.DebugLog;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.bean.Diary_Table;
 
@@ -31,9 +30,6 @@ public class DbUtils {
             diary.insert();
             mDiaries.add(diary);
         }
-
-        Log.d("addDiaries", mDiaries.toString());
-
         return mDiaries;
     }
 
@@ -41,6 +37,7 @@ public class DbUtils {
         diary.insert();
     }
 
+    @DebugLog
     public static void deleteDiary(long id) {
         SQLite.delete(Diary.class)
                 .where(Diary_Table.id.eq(id))
@@ -55,49 +52,43 @@ public class DbUtils {
 
         TransactionManager.getInstance().addTransaction(
                 new QueryTransaction(DBTransactionInfo.create(BaseTransaction.PRIORITY_UI), update));
-        Log.d("updateDiary", "id - " + id);
-
     }
 
+    @DebugLog
     public static Diary queryDiaryById(long id) {
         Diary diary = SQLite.select().from(Diary.class)
                 .where(Diary_Table.id.eq(id))
                 .querySingle();
 
-        Log.d("queryDiaryById",
-                diary != null ? diary.toString() : "no such element with id - " + id);
-
         return diary;
     }
 
+    @DebugLog
     public static Diary queryDiaryByTitle(String title) {
         Diary diary = SQLite.select().from(Diary.class)
                 .where(Diary_Table.title.eq(title))
                 .querySingle();
 
-        Log.d("queryDiaryByTitle",
-                diary != null ? diary.toString() : "no such element with title - " + title);
-
         return diary;
     }
 
+    @DebugLog
     public static List<Diary> queryDiaryByDate(int year, int month) {
         List<Diary> diaries = SQLite.select().from(Diary.class)
                 .where(Diary_Table.year.eq(year))
                 .and(Diary_Table.month.eq(month))
                 .queryList();
 
-        Log.d("queryDiaryByDate", diaries.toString());
-
         return diaries;
     }
 
+    @DebugLog
     public static List<Diary> loadAllDiary() {
         List<Diary> diaries = SQLite.select().from(Diary.class).queryList();
-        Log.d("loadAllDiary", diaries.toString());
         return diaries;
     }
 
+    @DebugLog
     public static List<String> loadAllTitles() {
         List<Diary> diaries = SQLite.select(Diary_Table.title)
                 .from(Diary.class).queryList();
@@ -106,10 +97,10 @@ public class DbUtils {
         for (Diary diary : diaries) {
             titles.add(diary.getTitle());
         }
-        Log.d("loadAllTitles", titles.toString());
         return titles;
     }
 
+    @DebugLog
     public static List<String> loadTitlesByDate(int year, int month) {
         List<Diary> diaries = SQLite.select(Diary_Table.title).from(Diary.class)
                 .where(Diary_Table.year.eq(year))
@@ -121,15 +112,14 @@ public class DbUtils {
         for (Diary diary : diaries) {
             titles.add(diary.getTitle());
         }
-        Log.d("loadTitlesByDate", "year -" + year + ", month - " + month + ", " + titles.toString());
         return titles;
     }
-
-    public static boolean isPresent(long id) {
-        SQLite.select().from(Diary.class)
-                .where(Diary_Table.id.eq(id))
-                .querySingle();
-
-        return true;
-    }
+//
+//    public static boolean isPresent(long id) {
+//        SQLite.select().from(Diary.class)
+//                .where(Diary_Table.id.eq(id))
+//                .querySingle();
+//
+//        return true;
+//    }
 }

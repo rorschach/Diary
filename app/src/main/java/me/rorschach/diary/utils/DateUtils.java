@@ -2,6 +2,8 @@ package me.rorschach.diary.utils;
 
 import java.util.HashMap;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Created by lei on 16-1-18.
  */
@@ -73,6 +75,7 @@ public class DateUtils {
         }
     }
 
+    @DebugLog
     public static String getChineseDate(int year, int month, int day) {
         StringBuilder sb = new StringBuilder();
         sb.append(yearToChinese(year));

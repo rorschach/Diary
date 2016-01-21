@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -24,6 +24,18 @@
         <item name="android:textColor">@color/text_color</item>
         <item name="android:lineSpacingExtra">1dp</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <style name="PointTextStyle">
+        <item name="android:layout_width">@dimen/red_circle_size</item>
+        <item name="android:layout_height">@dimen/red_circle_size</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:background">@drawable/red_circle_bg</item>
     </style>
 
 </resources>

@@ -14,21 +14,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Log.d("TAG", DateUtils.getChineseDate());
-
-//        testDb();
+        testDb();
     }
 
     private void testDb() {
         DbUtils.addDiaries();
 //
-//        DbUtils.loadAllTitles();
+        DbUtils.loadAllTitles();
 
         DbUtils.queryDiaryById(4);
 
         DbUtils.queryDiaryByTitle("TITLE-" + 4);
 
-//        DbUtils.queryDiaryByDate(2016, 1);
+        DbUtils.queryDiaryByDate(2016, 1);
 
         DbUtils.deleteDiary(5);
 

@@ -1,7 +1,6 @@
 package me.rorschach.diary.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -10,6 +9,7 @@ import org.xmlpull.v1.XmlSerializer;
 import java.util.ArrayList;
 import java.util.List;
 
+import hugo.weaving.DebugLog;
 import me.rorschach.diary.bean.Diary;
 
 /**
@@ -17,6 +17,7 @@ import me.rorschach.diary.bean.Diary;
  */
 public class XmlUtils {
 
+    @DebugLog
     public static void serializerXml(Context context) throws Exception {
         XmlSerializer xs = Xml.newSerializer();
         xs.setOutput(context.openFileOutput("diaries.xml", Context.MODE_PRIVATE), "utf-8");
@@ -66,6 +67,7 @@ public class XmlUtils {
         xs.endDocument();
     }
 
+    @DebugLog
     public static List<Diary> parserXml (Context context) throws Exception {
 
         XmlPullParser xpp = Xml.newPullParser();
@@ -108,8 +110,6 @@ public class XmlUtils {
             }
             eventType = xpp.next();
         }
-
-        Log.d("XmlPullParser", diaries.toString());
 
         return diaries;
     }

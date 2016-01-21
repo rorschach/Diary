@@ -96,6 +96,10 @@ public class MultipleVerticalTextView extends View {
         requestLayout();
     }
 
+    public final String getText() {
+        return this.text;
+    }
+
     //设置字体大小
     public final void setTextSize(float size) {
         if (size != paint.getTextSize()) {

@@ -10,16 +10,21 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.utils.DateUtils;
 import me.rorschach.diary.utils.DbUtils;
 import me.rorschach.diary.utils.FontUtils;
-import me.rorschach.diary.utils.XmlUtils;
 import me.rorschach.diary.views.MultipleVerticalTextView;
 import me.rorschach.diary.views.VerticalTextView;
 
@@ -35,6 +40,14 @@ public class ViewActivity extends AppCompatActivity {
     VerticalTextView mEnd;
     @Bind(R.id.horizontal_container)
     HorizontalScrollView mHorizontalScrollView;
+    @Bind(R.id.modify)
+    TextView mModify;
+    @Bind(R.id.save)
+    TextView mSave;
+    @Bind(R.id.delete)
+    TextView mDelete;
+    @Bind(R.id.point_container)
+    LinearLayout mPointContainer;
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -44,6 +57,10 @@ public class ViewActivity extends AppCompatActivity {
     private float[] gravity = new float[3];
 
     private long lastUpdateTime;
+
+    private static boolean isHide = false;
+    private static AccelerateInterpolator ACCE_INTERPOLATER = new AccelerateInterpolator();
+    private static DecelerateInterpolator DECE_INTERPOLATER = new DecelerateInterpolator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,44 +74,103 @@ public class ViewActivity extends AppCompatActivity {
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
+    @DebugLog
     private void initView() {
-        Diary diary = DbUtils.queryDiaryById(5);
+        Diary diary = DbUtils.queryDiaryById(1);
 
         if (diary == null) {
             diary = new Diary(this.getResources().getString(R.string.test_title),
                     this.getResources().getString(R.string.test_body),
                     this.getResources().getString(R.string.test_end),
                     2016, 1, 20);
-            diary.setId(5);
-            diary.save();
+            diary.insert();
         }
 
         mTitle.setText(diary.getTitle());
-        mTitle.setIncludeFontPadding(false);
 
         mDate.setText(DateUtils.getChineseDate(
                 diary.getYear(), diary.getMonth(), diary.getDay()));
 
         mEnd.setText(diary.getEnd());
+//        mEnd.setTextIsSelectable(true);
 
         mBody.setTypeface(FontUtils.getTypeface(this));
         mBody.setText(diary.getBody());
+//        mBody.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+//                cm.setText(mBody.getText());
+//                Toast.makeText(ViewActivity.this, "copy the content", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
 
+        scrollPage();
+
+        mBody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animatePointers();
+            }
+        });
+
+        mModify.setTypeface(FontUtils.getTypeface(this));
+        mSave.setTypeface(FontUtils.getTypeface(this));
+        mDelete.setTypeface(FontUtils.getTypeface(this));
+    }
+
+    private void animatePointers() {
+        isHide = !isHide;
+        if (isHide) {
+            mModify.animate()
+                    .translationY(mPointContainer.getHeight())
+                    .setDuration(300)
+                    .setInterpolator(ACCE_INTERPOLATER);
+
+            mSave.animate()
+                    .translationY(mPointContainer.getHeight())
+                    .setStartDelay(50)
+                    .setDuration(300)
+                    .setInterpolator(ACCE_INTERPOLATER);
+
+            mDelete.animate()
+                    .translationY(mPointContainer.getHeight())
+                    .setDuration(300)
+                    .setStartDelay(100)
+                    .setInterpolator(ACCE_INTERPOLATER)
+                    .start();
+        } else {
+            mModify.animate()
+                    .translationY(0)
+                    .setDuration(300)
+                    .setInterpolator(DECE_INTERPOLATER);
+
+            mSave.animate()
+                    .translationY(0)
+                    .setStartDelay(50)
+                    .setDuration(300)
+                    .setInterpolator(DECE_INTERPOLATER);
+
+            mDelete.animate()
+                    .translationY(0)
+                    .setDuration(300)
+                    .setStartDelay(100)
+                    .setInterpolator(DECE_INTERPOLATER)
+                    .start();
+        }
+    }
+
+    private void scrollPage() {
         mHorizontalScrollView.post(new Runnable() {
             @Override
             public void run() {
                 mHorizontalScrollView.scrollBy(mHorizontalScrollView.getRight(), 0);
             }
         });
-
-        try {
-            XmlUtils.serializerXml(this);
-            XmlUtils.parserXml(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
+    @DebugLog
     private void changeFontFamily(Typeface typeface) {
         mTitle.setTypeface(typeface);
         mBody.setTypeface(typeface);
