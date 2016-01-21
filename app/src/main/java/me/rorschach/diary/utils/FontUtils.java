@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Created by lei on 16-1-20.
  */
 public class FontUtils {
 
-    private static boolean isWenyue = true;
+    private static boolean isQingyue = true;
 
 //    private static String defaultFont = "Wenyue-GutiFangsong.otf";
     private static String defaultFont = "FontType-QingYue.ttf";
@@ -19,11 +21,11 @@ public class FontUtils {
     }
 
     public static void changeFont() {
-        isWenyue = !isWenyue;
-        if (isWenyue) {
-            setDefaultFont("Wenyue-GutiFangsong.otf");
-        } else {
+        isQingyue = !isQingyue;
+        if (isQingyue) {
             setDefaultFont("FontType-QingYue.ttf");
+        } else {
+            setDefaultFont("Wenyue-GutiFangsong.otf");
         }
     }
 
@@ -38,6 +40,7 @@ public class FontUtils {
         textView.setTypeface(typeface);
     }
 
+    @DebugLog
     public static Typeface getTypeface(Context context) {
         String fontPath = "fonts/" + getDefaultFont();
         return Typeface.createFromAsset(context.getAssets(), fontPath);

@@ -16,7 +16,9 @@
     <style name="DiaryTitleStyle" parent="DiaryPadding">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_color</item>
-        <item name="android:textSize">@dimen/huge_text_size</item>
+        <item name="android:textSize">@dimen/big_text_size</item>
+        <item name="android:lineSpacingExtra">1dp</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <style name="DiaryBodyStyle" parent="DiaryPadding">
@@ -29,6 +31,7 @@
     <style name="PointTextStyle">
         <item name="android:layout_width">@dimen/red_circle_size</item>
         <item name="android:layout_height">@dimen/red_circle_size</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginBottom">30dp</item>

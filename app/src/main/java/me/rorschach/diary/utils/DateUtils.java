@@ -13,10 +13,6 @@ public class DateUtils {
     public static final String MONTH_IN_CHINESE = "月";
     public static final String DAY_IN_CHINESE = "日";
 
-    private int year = 0;
-    private int month = 0;
-    private int day = 0;
-
     private static final HashMap<Integer, String> numberToChinese = new HashMap<>();
 
     static {
@@ -33,7 +29,7 @@ public class DateUtils {
         numberToChinese.put(10, "十");
     }
 
-    private static String yearToChinese(int year) {
+    public static String yearToChinese(int year) {
         StringBuilder sb = new StringBuilder();
         int y;
         while (year > 0) {
@@ -45,7 +41,7 @@ public class DateUtils {
         return sb.toString();
     }
 
-    private static String othersToChinese(int monthOrDay) {
+    public static String othersToChinese(int monthOrDay) {
         if (monthOrDay < 0) {
             return "";
         } else {
@@ -59,7 +55,8 @@ public class DateUtils {
                 if (tens == 1) {
                     sb.append("十");
                 } else {
-                    sb.append(numberToChinese.get(tens) + "十");
+                    sb.append(numberToChinese.get(tens));
+                    sb.append("十");
                 }
 
                 int units = monthOrDay % 10;

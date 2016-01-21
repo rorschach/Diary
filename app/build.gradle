@@ -26,10 +26,12 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.+'
+    compile 'com.android.support:recyclerview-v7:22.+'
     compile 'com.jakewharton:butterknife:7.0.1'
     apt 'com.github.Raizlabs.DBFlow:dbflow-processor:3.0.0-beta1'
     compile "com.github.Raizlabs.DBFlow:dbflow-core:3.0.0-beta1"
     compile "com.github.Raizlabs.DBFlow:dbflow:3.0.0-beta1"
+    compile 'net.danlew:android.joda:2.9.1'
 
     testCompile 'junit:junit:4.12'
 //    testCompile 'com.android.support.test:runner:0.3'

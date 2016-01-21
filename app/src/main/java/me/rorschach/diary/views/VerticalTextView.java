@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import me.rorschach.diary.utils.FontUtils;
-
 /**
  * Created by lei on 16-1-18.
  */
@@ -36,7 +34,7 @@ public class VerticalTextView extends TextView {
             return;
         }
 
-        FontUtils.applyFont(context, this);
+//        FontUtils.applyFont(context, this);
 //
 //        TypedArray ta = context.getTheme()
 //                .obtainStyledAttributes(attrs, R.styleable.VerticalTextView, 0, 0);

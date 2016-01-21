@@ -15,20 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.EditActivity"
+            android:windowSoftInputMode="adjustResize">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN"/>-->
 
             <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".activities.EditActivity">
-        </activity>
         <activity android:name=".activities.ViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
     </application>
 

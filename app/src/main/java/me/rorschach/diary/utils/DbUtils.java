@@ -7,6 +7,8 @@ import com.raizlabs.android.dbflow.runtime.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,21 +22,18 @@ import me.rorschach.diary.bean.Diary_Table;
  */
 public class DbUtils {
 
+    @DebugLog
     public static List<Diary> addDiaries() {
         List<Diary> mDiaries = new ArrayList<>();
         Diary diary;
-
+        DateTime time = new DateTime();
         for (int i = 0; i < 10; i++) {
-            diary = new Diary("TITLE-" + i, "BODY-" + i, "END-" + i,
-                    2016, 1, 20);
+            diary = new Diary("标题 | " + i, "BODY-" + i, "END-" + i,
+                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
             diary.insert();
             mDiaries.add(diary);
         }
         return mDiaries;
-    }
-
-    public static void insertDiary(Diary diary) {
-        diary.insert();
     }
 
     @DebugLog
@@ -56,36 +55,29 @@ public class DbUtils {
 
     @DebugLog
     public static Diary queryDiaryById(long id) {
-        Diary diary = SQLite.select().from(Diary.class)
+        return SQLite.select().from(Diary.class)
                 .where(Diary_Table.id.eq(id))
                 .querySingle();
-
-        return diary;
     }
 
     @DebugLog
     public static Diary queryDiaryByTitle(String title) {
-        Diary diary = SQLite.select().from(Diary.class)
+        return SQLite.select().from(Diary.class)
                 .where(Diary_Table.title.eq(title))
                 .querySingle();
-
-        return diary;
     }
 
     @DebugLog
     public static List<Diary> queryDiaryByDate(int year, int month) {
-        List<Diary> diaries = SQLite.select().from(Diary.class)
+        return SQLite.select().from(Diary.class)
                 .where(Diary_Table.year.eq(year))
                 .and(Diary_Table.month.eq(month))
                 .queryList();
-
-        return diaries;
     }
 
     @DebugLog
     public static List<Diary> loadAllDiary() {
-        List<Diary> diaries = SQLite.select().from(Diary.class).queryList();
-        return diaries;
+        return SQLite.select().from(Diary.class).queryList();
     }
 
     @DebugLog

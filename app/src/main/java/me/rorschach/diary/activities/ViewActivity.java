@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.joda.time.DateTime;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,8 +62,10 @@ public class ViewActivity extends AppCompatActivity {
     private long lastUpdateTime;
 
     private static boolean isHide = false;
-    private static AccelerateInterpolator ACCE_INTERPOLATER = new AccelerateInterpolator();
-    private static DecelerateInterpolator DECE_INTERPOLATER = new DecelerateInterpolator();
+
+    private static AccelerateInterpolator ACCE_INTERPOLATOR = new AccelerateInterpolator();
+    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
+    private static OvershootInterpolator OVER_INTERPOLATOR = new OvershootInterpolator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +84,11 @@ public class ViewActivity extends AppCompatActivity {
         Diary diary = DbUtils.queryDiaryById(1);
 
         if (diary == null) {
+            DateTime time = new DateTime();
             diary = new Diary(this.getResources().getString(R.string.test_title),
                     this.getResources().getString(R.string.test_body),
                     this.getResources().getString(R.string.test_end),
-                    2016, 1, 20);
+                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
             diary.insert();
         }
 
@@ -126,37 +132,37 @@ public class ViewActivity extends AppCompatActivity {
             mModify.animate()
                     .translationY(mPointContainer.getHeight())
                     .setDuration(300)
-                    .setInterpolator(ACCE_INTERPOLATER);
+                    .setInterpolator(ACCE_INTERPOLATOR);
 
             mSave.animate()
                     .translationY(mPointContainer.getHeight())
                     .setStartDelay(50)
                     .setDuration(300)
-                    .setInterpolator(ACCE_INTERPOLATER);
+                    .setInterpolator(ACCE_INTERPOLATOR);
 
             mDelete.animate()
                     .translationY(mPointContainer.getHeight())
                     .setDuration(300)
                     .setStartDelay(100)
-                    .setInterpolator(ACCE_INTERPOLATER)
+                    .setInterpolator(ACCE_INTERPOLATOR)
                     .start();
         } else {
             mModify.animate()
                     .translationY(0)
                     .setDuration(300)
-                    .setInterpolator(DECE_INTERPOLATER);
+                    .setInterpolator(OVER_INTERPOLATOR);
 
             mSave.animate()
                     .translationY(0)
                     .setStartDelay(50)
                     .setDuration(300)
-                    .setInterpolator(DECE_INTERPOLATER);
+                    .setInterpolator(OVER_INTERPOLATOR);
 
             mDelete.animate()
                     .translationY(0)
                     .setDuration(300)
                     .setStartDelay(100)
-                    .setInterpolator(DECE_INTERPOLATER)
+                    .setInterpolator(OVER_INTERPOLATOR)
                     .start();
         }
     }
