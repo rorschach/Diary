@@ -4,35 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="horizontal"
     tools:context=".activities.MainActivity">
 
-    <!--<TextView-->
-        <!--android:id="@+id/test"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:background="@drawable/text_wrapper"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="14dp"-->
-        <!--android:textColor="@color/text_color"-->
-        <!--android:text="双\n击\n返\n回"-->
-        <!--android:textSize="24sp"/>-->
+    <TextView
+        android:id="@+id/test"
+        android:text="测"
+        android:padding="4dp"
+        android:gravity="center"
+        android:layout_margin="4dp"
+        android:textColor="@color/bright_red"
+        android:textSize="@dimen/normal_text_size"
+        android:background="@drawable/text_wrapper"
+        android:layout_gravity="bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/diary_list"
         android:layout_width="0dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="20dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="160dp"
         android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
         android:layout_gravity="right"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <me.rorschach.diary.views.VerticalTextView
@@ -48,7 +50,7 @@
         <TextView
             android:id="@+id/write"
             style="@style/PointTextStyle"
-            android:text="撰"/>
+            android:text="@string/write"/>
 
         <me.rorschach.diary.views.VerticalTextView
             android:id="@+id/month"

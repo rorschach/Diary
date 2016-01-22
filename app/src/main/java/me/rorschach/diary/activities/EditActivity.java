@@ -1,12 +1,14 @@
 package me.rorschach.diary.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -35,17 +37,37 @@ public class EditActivity extends AppCompatActivity {
     private Diary mDiary;
     private DateTime mDateTime;
 
+    private static String exampleTitle;
+    private static String exampleBody = "";
+    private static String exampleEnd;
+
+    private static final int NO_TITLE = -1;
+    private static final int NO_CONTENT = 0;
+    private static final int NO_CHANGE = 1;
+    private static final int INSERT_DIARY = 2;
+    private static final int UPDATE_DIARY = 3;
+    private static final int OTHER = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         ButterKnife.bind(this);
 
-        mDone.setTypeface(FontUtils.getTypeface(this));
+        Typeface typeface = FontUtils.getTypeface(this);
+        mDone.setTypeface(typeface);
+        mTitle.setTypeface(typeface);
+        mBody.setTypeface(typeface);
+        mEnd.setTypeface(typeface);
+
         mDateTime = new DateTime();
-        String date = DateUtils.othersToChinese(mDateTime.getDayOfMonth()) + "日";
-        mTitle.setText(date);
-        mTitle.setSelection(date.length());
+        exampleTitle = DateUtils.othersToChinese(mDateTime.getDayOfMonth()) + "日";
+        exampleEnd = getResources().getString(R.string.example_end);
+
+        mTitle.setText(exampleTitle);
+        mTitle.setSelection(exampleTitle.length());
+
+        mEnd.setText(exampleEnd);
 
         handleIntent();
     }
@@ -55,66 +77,101 @@ public class EditActivity extends AppCompatActivity {
         mDiary = intent.getParcelableExtra("DIARY");
 
         if (mDiary != null) {
-            mTitle.setText(mDiary.getTitle());
-            mBody.setText(mDiary.getBody());
-            mEnd.setText(mDiary.getEnd());
+            exampleTitle = mDiary.getTitle();
+            exampleBody = mDiary.getBody();
+            exampleEnd = mDiary.getEnd();
+
+            mTitle.setText(exampleTitle);
+            mBody.setText(exampleBody);
+            mEnd.setText(exampleEnd);
         }
     }
 
     @OnClick(R.id.done)
-    @DebugLog
-    public void saveDiary() {
+    public void trySaveDiary() {
+        switch (checkInput()) {
 
-        if (isInputLegality()) {
+            case NO_TITLE:
+                Toast.makeText(this, "title should not be empty", Toast.LENGTH_SHORT).show();
+                break;
 
-            if (TextUtils.isEmpty(mTitle.getText().toString())
-                    & TextUtils.isEmpty(mBody.getText().toString())
-                    & TextUtils.isEmpty(mEnd.getText().toString())) {
-                return;
-            }
+            case NO_CONTENT:
+            case NO_CHANGE:
+                super.onBackPressed();
+                break;
 
-            if (TextUtils.isEmpty(mTitle.getText().toString())) {
-                mTitle.setText(" ");
-            }
-
-            if (TextUtils.isEmpty(mBody.getText().toString())) {
-                mBody.setText(" ");
-            }
-
-            if (TextUtils.isEmpty(mEnd.getText().toString())) {
-                mEnd.setText(" ");
-            }
-
-            if (mDiary != null) {
-
-                mDiary.setTitle(mTitle.getText().toString());
-                mDiary.setBody(mBody.getText().toString());
-                mDiary.setEnd(mEnd.getText().toString());
-            } else {
-
-                mDiary = new Diary(mTitle.getText().toString(),
-                        mBody.getText().toString(),
-                        mEnd.getText().toString(),
-                        mDateTime.getYear(),
-                        mDateTime.getMonthOfYear(),
-                        mDateTime.getDayOfMonth());
-            }
-
-            mDiary.save();
-
-            EditActivity.this.finish();
+            case INSERT_DIARY:
+            case UPDATE_DIARY:
+            case OTHER:
+                saveDiary();
+                super.onBackPressed();
+                break;
         }
     }
 
-    private boolean isInputLegality() {
-        return !(TextUtils.isEmpty(mTitle.getText().toString())
-                & TextUtils.isEmpty(mBody.getText().toString())
-                & TextUtils.isEmpty(mEnd.getText().toString()));
+    @DebugLog
+    public void saveDiary() {
+
+        if (TextUtils.isEmpty(mBody.getText().toString())) {
+            mBody.setText(" ");
+        }
+
+        if (TextUtils.isEmpty(mEnd.getText().toString())) {
+            mEnd.setText(" ");
+        }
+
+        if (mDiary != null) {
+
+            mDiary.setTitle(mTitle.getText().toString());
+            mDiary.setBody(mBody.getText().toString());
+            mDiary.setEnd(mEnd.getText().toString());
+        } else {
+
+            mDiary = new Diary(mTitle.getText().toString(),
+                    mBody.getText().toString(),
+                    mEnd.getText().toString(),
+                    mDateTime.getYear(),
+                    mDateTime.getMonthOfYear(),
+                    mDateTime.getDayOfMonth());
+        }
+
+        mDiary.save();
+//        EditActivity.this.finish();
+        Intent intent = new Intent();
+        intent.putExtra("DIARY", mDiary);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    @DebugLog
+    private int checkInput() {
+
+        if (TextUtils.isEmpty(mTitle.getText().toString())) {
+            return NO_TITLE;
+        } else if (exampleTitle.equals(mTitle.getText().toString())
+                & exampleEnd.equals(mEnd.getText().toString())) {
+
+            if (mDiary == null) {
+
+                if (TextUtils.isEmpty(mBody.getText().toString())) {
+                    return NO_CONTENT;
+                } else {
+                    return INSERT_DIARY;
+                }
+
+            } else {
+                if (exampleBody.equals(mBody.getText().toString())) {
+                    return NO_CHANGE;
+                } else {
+                    return UPDATE_DIARY;
+                }
+            }
+        }
+        return OTHER;
     }
 
     @Override
     public void onBackPressed() {
-        saveDiary();
-        super.onBackPressed();
+        trySaveDiary();
     }
 }

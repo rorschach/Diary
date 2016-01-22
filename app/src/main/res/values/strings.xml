@@ -1,12 +1,24 @@
 <resources>
     <string name="app_name">Diary</string>
-    <string name="hello_world">hello world!</string>
-    <string name="test_title">"贺新郎·寄辛幼安 和见怀韵"</string>
-    <string name="test_body">老去凭谁说\n看几番 神奇臭腐\n夏裘冬葛\n父老长安今余几\n后死无仇可雪\n犹未燥 当时生发\n二十五弦多少恨\n算世间 那有平分月\n胡妇弄 汉宫瑟\n树犹如此堪重别\n只使君 从来与我\n话头多合\n行矣置之无足问\n谁换妍皮痴骨\n但莫使伯牙弦绝\n九转丹砂牢拾取\n管精金 只是寻常铁\n龙共虎 应声裂</string>
-    <string name="test_end">"天雨雪 于江夏"</string>
+    <!--<string name="hello_world">hello world!</string>-->
+    <!--<string name="test_title">"贺新郎·寄辛幼安 和见怀韵"</string>-->
+    <!--<string name="test_body">老去凭谁说\n看几番 神奇臭腐\n夏裘冬葛\n父老长安今余几\n后死无仇可雪\n犹未燥 当时生发\n二十五弦多少恨\n算世间 那有平分月\n胡妇弄 汉宫瑟\n树犹如此堪重别\n只使君 从来与我\n话头多合\n行矣置之无足问\n谁换妍皮痴骨\n但莫使伯牙弦绝\n九转丹砂牢拾取\n管精金 只是寻常铁\n龙共虎 应声裂</string>-->
+    <!--<string name="test_end">"天雨雪 于江夏"</string>-->
+
+    <string name="write">撰</string>
+    <string name="save">存</string>
+    <string name="modify">改</string>
+    <string name="delete">删</string>
+    <string name="done">完</string>
 
     <string name="dialog_title">摇一摇更换字体</string>
     <string name="dialog_message">确认要更换字体吗？</string>
     <string name="ok">更换</string>
     <string name="cancel">取消</string>
+
+    <string name="example_end">晚来天雨雪 能饮一杯无</string>
+
+    <string name="hint_title">标题</string>
+    <string name="hint_body">正文</string>
+    <string name="hint_end">尾记</string>
 </resources>

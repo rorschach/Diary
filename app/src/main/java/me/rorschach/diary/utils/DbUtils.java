@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.runtime.TransactionManager;
 import com.raizlabs.android.dbflow.runtime.transaction.BaseTransaction;
 import com.raizlabs.android.dbflow.runtime.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
 import java.util.ArrayList;
@@ -37,6 +38,10 @@ public class DbUtils {
             diary.save();
         }
 
+    }
+
+    public static long countOfDiaries() {
+        return new Select().from(Diary.class).where().count();
     }
 
     @DebugLog
@@ -79,7 +84,7 @@ public class DbUtils {
     }
 
     @DebugLog
-    public static List<Diary> loadAllDiary() {
+    public static List<Diary> loadAllDiaries() {
         return SQLite.select().from(Diary.class).queryList();
     }
 

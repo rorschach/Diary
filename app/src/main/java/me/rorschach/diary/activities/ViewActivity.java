@@ -23,7 +23,6 @@ import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.utils.DateUtils;
-import me.rorschach.diary.utils.DbUtils;
 import me.rorschach.diary.utils.FontUtils;
 import me.rorschach.diary.views.MultipleVerticalTextView;
 import me.rorschach.diary.views.VerticalTextView;
@@ -61,10 +60,10 @@ public class ViewActivity extends AppCompatActivity {
 
     private static boolean isHide = false;
 
-    private String TITLE;
+//    private String TITLE;
 
     private static AccelerateInterpolator ACCE_INTERPOLATOR = new AccelerateInterpolator();
-//    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
+    //    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
     private static OvershootInterpolator OVER_INTERPOLATOR = new OvershootInterpolator();
 
     @Override
@@ -73,7 +72,7 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
         ButterKnife.bind(this);
 
-        handleIntent();
+        handleIntent(getIntent());
 
         initView();
 
@@ -81,15 +80,10 @@ public class ViewActivity extends AppCompatActivity {
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
-    private void handleIntent() {
-        Intent intent = getIntent();
-        TITLE = intent.getStringExtra("TITLE");
-    }
+    @DebugLog
+    private void handleIntent(Intent intent) {
+        mDiary = intent.getParcelableExtra("DIARY");
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        mDiary = DbUtils.queryDiaryByTitle(TITLE);
         if (mDiary == null) {
             this.finish();
         }
@@ -98,8 +92,6 @@ public class ViewActivity extends AppCompatActivity {
                 mDiary.getYear(), mDiary.getMonth(), mDiary.getDay()));
         mEnd.setText(mDiary.getEnd());
         mBody.setText(mDiary.getBody());
-
-        scrollPage();
     }
 
     @DebugLog
@@ -135,7 +127,9 @@ public class ViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ViewActivity.this, EditActivity.class);
                 intent.putExtra("DIARY", mDiary);
-                startActivity(intent);
+//                startActivity(intent);
+
+                startActivityForResult(intent, 1);
             }
         });
         mSave.setTypeface(sTypeface);
@@ -153,6 +147,13 @@ public class ViewActivity extends AppCompatActivity {
                 mDiary.delete();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            handleIntent(data);
+        }
     }
 
     private void animatePointers() {
@@ -217,6 +218,8 @@ public class ViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         dialog = getAlertDialog();
+
+        scrollPage();
         if (mSensor != null) {
             mSensorManager.registerListener(
                     mListener, mSensor, SensorManager.SENSOR_DELAY_UI);

@@ -2,43 +2,44 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/bg_color"
                 tools:context=".activities.EditActivity">
 
     <EditText
         android:id="@+id/title"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="title - default is date"/>
+        android:layout_alignParentTop="true"
+        android:hint="@string/hint_title"/>
 
     <EditText
         android:id="@+id/body"
-        android:gravity="start"
-        android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="content"
-        android:layout_above="@+id/linearLayout"/>
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/title"
+        android:gravity="start"
+        android:hint="@string/hint_body"/>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/end"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:hint="end - default is location"/>
+            android:layout_weight="1"
+            android:hint="@string/hint_end"/>
 
         <TextView
             android:id="@+id/done"
-            android:text="存"
-            style="@style/PointTextStyle" />
+            style="@style/PointTextStyle"
+            android:text="@string/done"/>
 
     </LinearLayout>
 

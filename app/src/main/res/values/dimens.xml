@@ -11,6 +11,6 @@
     <dimen name="normal_text_size">20sp</dimen>
     <dimen name="small_text_size">18sp</dimen>
 
-    <dimen name="red_circle_size">30sp</dimen>
+    <dimen name="red_circle_size">32sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>
