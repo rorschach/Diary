@@ -1,17 +1,16 @@
 package me.rorschach.diary.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -35,15 +34,15 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.month)
     VerticalTextView mMonth;
 
-    //    private static DateTime sDateTime;
-    private static Typeface sTypeface;
-    @Bind(R.id.test)
-    TextView mTest;
+//    @Bind(R.id.test)
+//    TextView mTest;
     @Bind(R.id.diary_list)
     RecyclerView mDiaryList;
 
     private List<String> titles;
-    private LinearLayoutManager layoutManager;
+
+    private static Typeface sTypeface;
+    //    private LinearLayoutManager layoutManager;
     private DiariesAdapter mAdapter;
 
     @Override
@@ -61,25 +60,24 @@ public class MainActivity extends AppCompatActivity {
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
-//                DbUtils.addDiaries();
+//                DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
 //            }
 //        }).start();
 
-        DateTime sDateTime = new DateTime();
+        final DateTime sDateTime = new DateTime();
         sTypeface = FontUtils.getTypeface(this);
         mYear.setTypeface(sTypeface);
-        mYear.setText(DateUtils.yearToChinese(sDateTime.getYear()) + "年");
+        mYear.setText(DateUtils.getChineseYear(sDateTime.getYear()));
         mWrite.setTypeface(sTypeface);
-        mTest.setTypeface(sTypeface);
+//        mTest.setTypeface(sTypeface);
         mMonth.setTypeface(sTypeface);
-        mMonth.setText(DateUtils.othersToChinese(sDateTime.getMonthOfYear()) + "月");
+        mMonth.setText(DateUtils.getChineseMonth(sDateTime.getMonthOfYear()));
 
         titles = DbUtils.loadAllTitles();
         mAdapter = new DiariesAdapter(this, titles);
 
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
-//        layoutManager.setReverseLayout(true);
 
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mDiaryList.setLayoutManager(layoutManager);
@@ -87,31 +85,36 @@ public class MainActivity extends AppCompatActivity {
         mDiaryList.setHasFixedSize(true);
         mDiaryList.setAdapter(mAdapter);
 
-        mDiaryList.post(new Runnable() {
-            @Override
-            public void run() {
-                mDiaryList.scrollToPosition(titles.size());
-            }
-        });
-
         mWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TAG", mAdapter.getItemCount() + "");
-                layoutManager.scrollToPosition(mAdapter.getItemCount() - 1);
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra("DAY", sDateTime.getDayOfMonth());
+                startActivity(intent);
             }
         });
     }
 
     @Override
+    @DebugLog
     protected void onResume() {
         super.onResume();
+        updateRecyclerView();
+    }
 
-        layoutManager.scrollToPositionWithOffset(titles.size(), mYear.getWidth());
+    private void updateRecyclerView() {
+        titles.clear();
+        titles.addAll(DbUtils.loadAllTitles());
+        mAdapter.notifyDataSetChanged();
+        mDiaryList.post(new Runnable() {
+            @Override
+            public void run() {
+                mDiaryList.scrollToPosition(mAdapter.getItemCount() - 1);
+            }
+        });
     }
 
     class DiariesAdapter extends RecyclerView.Adapter<DiariesAdapter.ViewHolder> {
-
 
         private Context mContext;
         private List<String> mTitles;
@@ -133,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-//            Diary diary = titles.get(position);
             holder.mTitle.setText(mTitles.get(position));
             holder.mTitle.setTypeface(sTypeface);
         }
@@ -158,7 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "test click", Toast.LENGTH_SHORT).show();
+                int position = getAdapterPosition();
+                final String title = mTitles.get(position);
+                Intent intent = new Intent(MainActivity.this, ViewActivity.class);
+                intent.putExtra("TITLE", title);
+                startActivity(intent);
             }
         }
 

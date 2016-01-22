@@ -83,4 +83,29 @@ public class DateUtils {
         sb.append(DAY_IN_CHINESE);
         return sb.toString();
     }
+
+    @DebugLog
+    public static String getChineseYear(int year) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(yearToChinese(year));
+        sb.append(YEAR_IN_CHINESE);
+        return sb.toString();
+    }
+
+    @DebugLog
+    public static String getChineseMonth(int month) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(othersToChinese(month));
+        sb.append(MONTH_IN_CHINESE);
+        return sb.toString();
+    }
+
+    @DebugLog
+    public static String getChineseDay(int day) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(othersToChinese(day));
+        sb.append(DAY_IN_CHINESE);
+        return sb.toString();
+    }
+
 }

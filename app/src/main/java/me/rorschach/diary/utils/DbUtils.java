@@ -7,8 +7,6 @@ import com.raizlabs.android.dbflow.runtime.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +21,22 @@ import me.rorschach.diary.bean.Diary_Table;
 public class DbUtils {
 
     @DebugLog
-    public static List<Diary> addDiaries() {
-        List<Diary> mDiaries = new ArrayList<>();
-        Diary diary;
-        DateTime time = new DateTime();
-        for (int i = 0; i < 10; i++) {
-            diary = new Diary("标题 | " + i, "BODY-" + i, "END-" + i,
-                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
-            diary.insert();
-            mDiaries.add(diary);
+    public static void addDiaries(List<Diary> diaries) {
+//        List<Diary> mDiaries = new ArrayList<>();
+//        Diary diary;
+//        DateTime time = new DateTime();
+//        for (int i = 0; i < 10; i++) {
+//            diary = new Diary("标题 | " + i, "BODY-" + i, "END-" + i,
+//                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
+//            diary.insert();
+//            mDiaries.add(diary);
+//        }
+//        return mDiaries;
+
+        for (Diary diary : diaries) {
+            diary.save();
         }
-        return mDiaries;
+
     }
 
     @DebugLog

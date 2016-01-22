@@ -1,6 +1,7 @@
 package me.rorschach.diary.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,16 +10,12 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.joda.time.DateTime;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,6 +51,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private Diary mDiary;
 
     private AlertDialog dialog;
 
@@ -63,8 +61,10 @@ public class ViewActivity extends AppCompatActivity {
 
     private static boolean isHide = false;
 
+    private String TITLE;
+
     private static AccelerateInterpolator ACCE_INTERPOLATOR = new AccelerateInterpolator();
-    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
+//    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
     private static OvershootInterpolator OVER_INTERPOLATOR = new OvershootInterpolator();
 
     @Override
@@ -73,35 +73,45 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
         ButterKnife.bind(this);
 
+        handleIntent();
+
         initView();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
+    private void handleIntent() {
+        Intent intent = getIntent();
+        TITLE = intent.getStringExtra("TITLE");
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        mDiary = DbUtils.queryDiaryByTitle(TITLE);
+        if (mDiary == null) {
+            this.finish();
+        }
+        mTitle.setText(mDiary.getTitle());
+        mDate.setText(DateUtils.getChineseDate(
+                mDiary.getYear(), mDiary.getMonth(), mDiary.getDay()));
+        mEnd.setText(mDiary.getEnd());
+        mBody.setText(mDiary.getBody());
+
+        scrollPage();
+    }
+
     @DebugLog
     private void initView() {
-        Diary diary = DbUtils.queryDiaryById(1);
 
-        if (diary == null) {
-            DateTime time = new DateTime();
-            diary = new Diary(this.getResources().getString(R.string.test_title),
-                    this.getResources().getString(R.string.test_body),
-                    this.getResources().getString(R.string.test_end),
-                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
-            diary.insert();
-        }
+        Typeface sTypeface = FontUtils.getTypeface(this);
+        mTitle.setTypeface(sTypeface);
+        mDate.setTypeface(sTypeface);
+        mEnd.setTypeface(sTypeface);
+        mBody.setTypeface(sTypeface);
 
-        mTitle.setText(diary.getTitle());
-
-        mDate.setText(DateUtils.getChineseDate(
-                diary.getYear(), diary.getMonth(), diary.getDay()));
-
-        mEnd.setText(diary.getEnd());
 //        mEnd.setTextIsSelectable(true);
-
-        mBody.setTypeface(FontUtils.getTypeface(this));
-        mBody.setText(diary.getBody());
 //        mBody.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
@@ -112,8 +122,6 @@ public class ViewActivity extends AppCompatActivity {
 //            }
 //        });
 
-        scrollPage();
-
         mBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,9 +129,30 @@ public class ViewActivity extends AppCompatActivity {
             }
         });
 
-        mModify.setTypeface(FontUtils.getTypeface(this));
-        mSave.setTypeface(FontUtils.getTypeface(this));
-        mDelete.setTypeface(FontUtils.getTypeface(this));
+        mModify.setTypeface(sTypeface);
+        mModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+                intent.putExtra("DIARY", mDiary);
+                startActivity(intent);
+            }
+        });
+        mSave.setTypeface(sTypeface);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewActivity.this.finish();
+            }
+        });
+        mDelete.setTypeface(sTypeface);
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewActivity.this.finish();
+                mDiary.delete();
+            }
+        });
     }
 
     private void animatePointers() {
@@ -224,7 +253,6 @@ public class ViewActivity extends AppCompatActivity {
             float y = event.values[1] - gravity[1];
             float z = event.values[2] - gravity[2];
             if (Math.abs(x) >= 10 || Math.abs(y) >= 10 || Math.abs(z) >= 10) {
-                Log.d("onSensorChanged", x + ", " + y + ", " + z);
                 if (!dialog.isShowing()) {
                     dialog.show();
                 } else {

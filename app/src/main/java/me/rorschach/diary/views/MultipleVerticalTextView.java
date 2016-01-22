@@ -215,7 +215,7 @@ public class MultipleVerticalTextView extends View {
                 }
             }
         }
-        mRealLine++;//额外增加一行
+        mRealLine += 2;//额外增加一行
         mTextWidth = mLineWidth * mRealLine;//计算文字总宽度
         measure(mTextWidth, getHeight());//重新调整大小
         layout(getLeft(), getTop(), getLeft() + mTextWidth, getBottom());//重新绘制容器

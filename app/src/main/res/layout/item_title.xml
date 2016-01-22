@@ -2,11 +2,9 @@
 <me.rorschach.diary.views.VerticalTextView
     android:id="@+id/title"
     style="@style/DiaryBodyStyle"
-    android:layout_marginTop="240dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:gravity="center_horizontal"
+    android:paddingTop="10dp"
+    android:layout_margin="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-</me.rorschach.diary.views.VerticalTextView>
+    android:layout_width="60dp"
+    android:layout_height="match_parent" />

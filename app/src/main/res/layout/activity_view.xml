@@ -5,13 +5,16 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/bg_color"
+
              android:paddingLeft="8dp"
+             android:paddingRight="4dp"
              android:paddingTop="15dp"
              tools:context=".activities.ViewActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="15dp">
 
         <HorizontalScrollView
             android:id="@+id/horizontal_container"

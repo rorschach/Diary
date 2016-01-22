@@ -1,5 +1,8 @@
 package me.rorschach.diary.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -9,7 +12,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  * Created by lei on 16-1-18.
  */
 @Table(database = DiaryDb.class)
-public class Diary extends BaseModel {
+public class Diary extends BaseModel implements Parcelable {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -23,9 +26,6 @@ public class Diary extends BaseModel {
 
     @Column
     private String end;
-
-//    @Column
-//    private String date;
 
     @Column
     private int year;
@@ -110,4 +110,40 @@ public class Diary extends BaseModel {
                 + ", title - " + title + ", body - " + body + ", end - " + end
                 + ", year - " + year + ", month - " + month + ", day - " + day + "]\n";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.body);
+        dest.writeString(this.end);
+        dest.writeInt(this.year);
+        dest.writeInt(this.month);
+        dest.writeInt(this.day);
+    }
+
+    protected Diary(Parcel in) {
+        this.id = in.readLong();
+        this.title = in.readString();
+        this.body = in.readString();
+        this.end = in.readString();
+        this.year = in.readInt();
+        this.month = in.readInt();
+        this.day = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Diary> CREATOR = new Parcelable.Creator<Diary>() {
+        public Diary createFromParcel(Parcel source) {
+            return new Diary(source);
+        }
+
+        public Diary[] newArray(int size) {
+            return new Diary[size];
+        }
+    };
 }
