@@ -29,12 +29,12 @@
     </style>
 
     <style name="PointTextStyle">
-        <item name="android:layout_width">@dimen/red_circle_size</item>
-        <item name="android:layout_height">@dimen/red_circle_size</item>
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/small_text_size</item>

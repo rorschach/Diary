@@ -1,13 +1,14 @@
 package me.rorschach.diary.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -90,7 +91,19 @@ public class EditActivity extends BaseActivity {
         switch (checkInput()) {
 
             case NO_TITLE:
-                Toast.makeText(this, "title should not be empty", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.save_dialog_title);
+                builder.setMessage(R.string.save_dialog_message);
+                builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditActivity.super.onBackPressed();
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+                builder.create().show();
                 break;
 
             case NO_CONTENT:

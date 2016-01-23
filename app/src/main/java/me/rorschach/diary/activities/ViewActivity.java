@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
@@ -38,6 +40,8 @@ public class ViewActivity extends BaseActivity {
     TextView mDelete;
     @Bind(R.id.point_container)
     LinearLayout mPointContainer;
+    @Bind(R.id.layout_container)
+    FrameLayout mLayoutContainer;
 
     //    private Typeface sTypeface;
     private Diary mDiary;
@@ -51,6 +55,7 @@ public class ViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        ButterKnife.bind(this);
 //        ButterKnife.bind(this);
 
         handleIntent(getIntent());
@@ -131,18 +136,18 @@ public class ViewActivity extends BaseActivity {
         isHide = !isHide;
         if (isHide) {
             mModify.animate()
-                    .translationY(mPointContainer.getHeight())
+                    .translationY(mModify.getHeight() * 2)
                     .setDuration(300)
                     .setInterpolator(ACCE_INTERPOLATOR);
 
             mSave.animate()
-                    .translationY(mPointContainer.getHeight())
+                    .translationY(mSave.getHeight() * 2)
                     .setStartDelay(50)
                     .setDuration(300)
                     .setInterpolator(ACCE_INTERPOLATOR);
 
             mDelete.animate()
-                    .translationY(mPointContainer.getHeight())
+                    .translationY(mDelete.getHeight() * 2)
                     .setDuration(300)
                     .setStartDelay(100)
                     .setInterpolator(ACCE_INTERPOLATOR)

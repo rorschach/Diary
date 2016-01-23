@@ -127,7 +127,7 @@ public class BaseActivity extends AppCompatActivity implements IFont {
             float z = event.values[2] - gravity[2];
             if (Math.abs(x) >= 10 || Math.abs(y) >= 10 || Math.abs(z) >= 10) {
                 if (!mDialog.isShowing()) {
-                    mDialog.setMessage(getResources().getString(R.string.dialog_message)
+                    mDialog.setMessage(getResources().getString(R.string.font_dialog_message)
                             + FontUtils.getFontName(BaseActivity.this));
                     mDialog.show();
                 } else {
@@ -144,8 +144,8 @@ public class BaseActivity extends AppCompatActivity implements IFont {
 
     private AlertDialog getAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_title);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.font_dialog_title);
+        builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 FontUtils.changeFont(BaseActivity.this);
                 applyFont(BaseActivity.this);

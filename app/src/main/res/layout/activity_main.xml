@@ -17,7 +17,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/text_wrapper"
         android:gravity="center"
-        android:text="测"
+        android:text="@string/test"
         android:textColor="@color/bright_red"
         android:textSize="@dimen/small_text_size"/>
 
@@ -44,7 +44,6 @@
     <LinearLayout
         android:layout_width="52dp"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
         android:orientation="vertical"
         android:padding="10dp">
 
