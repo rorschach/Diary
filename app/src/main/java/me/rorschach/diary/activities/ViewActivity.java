@@ -1,15 +1,8 @@
 package me.rorschach.diary.activities;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -18,16 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.utils.DateUtils;
-import me.rorschach.diary.utils.FontUtils;
 import me.rorschach.diary.views.MultipleVerticalTextView;
 import me.rorschach.diary.views.VerticalTextView;
 
-public class ViewActivity extends AppCompatActivity {
+public class ViewActivity extends BaseActivity {
 
     @Bind(R.id.title)
     VerticalTextView mTitle;
@@ -48,36 +39,23 @@ public class ViewActivity extends AppCompatActivity {
     @Bind(R.id.point_container)
     LinearLayout mPointContainer;
 
-    private SensorManager mSensorManager;
-    private Sensor mSensor;
+    //    private Typeface sTypeface;
     private Diary mDiary;
-
-    private AlertDialog dialog;
-
-    private float[] gravity = new float[3];
-
-    private long lastUpdateTime;
 
     private static boolean isHide = false;
 
-//    private String TITLE;
-
     private static AccelerateInterpolator ACCE_INTERPOLATOR = new AccelerateInterpolator();
-    //    private static DecelerateInterpolator DECE_INTERPOLATOR = new DecelerateInterpolator();
     private static OvershootInterpolator OVER_INTERPOLATOR = new OvershootInterpolator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
 
         handleIntent(getIntent());
 
         initView();
-
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     @DebugLog
@@ -97,11 +75,6 @@ public class ViewActivity extends AppCompatActivity {
     @DebugLog
     private void initView() {
 
-        Typeface sTypeface = FontUtils.getTypeface(this);
-        mTitle.setTypeface(sTypeface);
-        mDate.setTypeface(sTypeface);
-        mEnd.setTypeface(sTypeface);
-        mBody.setTypeface(sTypeface);
 
 //        mEnd.setTextIsSelectable(true);
 //        mBody.setOnLongClickListener(new View.OnLongClickListener() {
@@ -114,6 +87,7 @@ public class ViewActivity extends AppCompatActivity {
 //            }
 //        });
 
+
         mBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +95,6 @@ public class ViewActivity extends AppCompatActivity {
             }
         });
 
-        mModify.setTypeface(sTypeface);
         mModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,14 +105,12 @@ public class ViewActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-        mSave.setTypeface(sTypeface);
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ViewActivity.this.finish();
             }
         });
-        mDelete.setTypeface(sTypeface);
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,84 +178,28 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     @DebugLog
-    private void changeFontFamily(Typeface typeface) {
-        mTitle.setTypeface(typeface);
-        mBody.setTypeface(typeface);
-        mDate.setTypeface(typeface);
-        mEnd.setTypeface(typeface);
+    @Override
+    public void applyFont(Context context) {
+        super.applyFont(context);
+        mTitle.setTypeface(mTypeface);
+        mBody.setTypeface(mTypeface);
+        mDate.setTypeface(mTypeface);
+        mEnd.setTypeface(mTypeface);
+        mSave.setTypeface(mTypeface);
+        mModify.setTypeface(mTypeface);
+        mDelete.setTypeface(mTypeface);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dialog = getAlertDialog();
-
         scrollPage();
-        if (mSensor != null) {
-            mSensorManager.registerListener(
-                    mListener, mSensor, SensorManager.SENSOR_DELAY_UI);
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mSensor != null) {
-            mSensorManager.unregisterListener(mListener);
-        }
     }
 
-    private SensorEventListener mListener = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent event) {
 
-            long currentUpdateTime = System.currentTimeMillis();
-
-            if (currentUpdateTime - lastUpdateTime < 100) {
-                return;
-            }
-
-            final float alpha = 0.8f;
-
-            // Isolate the force of gravity with the low-pass filter.
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-            // Remove the gravity contribution with the high-pass filter.
-            float x = event.values[0] - gravity[0];
-            float y = event.values[1] - gravity[1];
-            float z = event.values[2] - gravity[2];
-            if (Math.abs(x) >= 10 || Math.abs(y) >= 10 || Math.abs(z) >= 10) {
-                if (!dialog.isShowing()) {
-                    dialog.show();
-                } else {
-                    return;
-                }
-            }
-            lastUpdateTime = currentUpdateTime;
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };
-
-    private AlertDialog getAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewActivity.this);
-        builder.setMessage(R.string.dialog_message)
-                .setTitle(R.string.dialog_title);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                FontUtils.changeFont();
-                changeFontFamily(FontUtils.getTypeface(ViewActivity.this));
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-
-        return builder.create();
-    }
 }

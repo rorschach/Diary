@@ -189,12 +189,14 @@ public class MultipleVerticalTextView extends View {
             paint.getTextWidths(" ", space);
 //            mLineWidth = (int) widths[0];
 //            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2);
-            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2);
+            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2)
+                    + DisplayUtils.dp2px(getContext(), 2);
         }
 
         fm = paint.getFontMetrics();
 //        mFontHeight = (int) (Math.ceil(fm.descent - fm.top) * 0.9);// 获得字体高度
-        mFontHeight = (int) (Math.ceil(fm.descent - fm.ascent));// 获得字体高度
+        mFontHeight = (int) (Math.ceil(fm.descent - fm.ascent))
+                + DisplayUtils.dp2px(getContext(), 2);// 获得字体高度
         //计算文字行数
         mRealLine = 0;
         for (int i = 0; i < this.TextLength; i++) {
@@ -215,7 +217,7 @@ public class MultipleVerticalTextView extends View {
                 }
             }
         }
-        mRealLine += 2;//额外增加一行
+        mRealLine++;//额外增加一行
         mTextWidth = mLineWidth * mRealLine;//计算文字总宽度
         measure(mTextWidth, getHeight());//重新调整大小
         layout(getLeft(), getTop(), getLeft() + mTextWidth, getBottom());//重新绘制容器

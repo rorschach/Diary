@@ -1,9 +1,8 @@
 package me.rorschach.diary.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,9 +18,8 @@ import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.utils.DateUtils;
-import me.rorschach.diary.utils.FontUtils;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends BaseActivity {
 
     @Bind(R.id.title)
     EditText mTitle;
@@ -54,13 +52,15 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         ButterKnife.bind(this);
 
-        Typeface typeface = FontUtils.getTypeface(this);
-        mDone.setTypeface(typeface);
-        mTitle.setTypeface(typeface);
-        mBody.setTypeface(typeface);
-        mEnd.setTypeface(typeface);
+        initView();
+
+        handleIntent();
+    }
+
+    private void initView() {
 
         mDateTime = new DateTime();
+
         exampleTitle = DateUtils.othersToChinese(mDateTime.getDayOfMonth()) + "日";
         exampleEnd = getResources().getString(R.string.example_end);
 
@@ -68,8 +68,6 @@ public class EditActivity extends AppCompatActivity {
         mTitle.setSelection(exampleTitle.length());
 
         mEnd.setText(exampleEnd);
-
-        handleIntent();
     }
 
     private void handleIntent() {
@@ -173,5 +171,14 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         trySaveDiary();
+    }
+
+    @Override
+    public void applyFont(Context context) {
+        super.applyFont(context);
+        mDone.setTypeface(mTypeface);
+        mTitle.setTypeface(mTypeface);
+        mBody.setTypeface(mTypeface);
+        mEnd.setTypeface(mTypeface);
     }
 }

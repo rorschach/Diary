@@ -2,9 +2,7 @@ package me.rorschach.diary.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +22,10 @@ import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.utils.DateUtils;
 import me.rorschach.diary.utils.DbUtils;
-import me.rorschach.diary.utils.FontUtils;
 import me.rorschach.diary.utils.XmlUtils;
 import me.rorschach.diary.views.VerticalTextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Bind(R.id.year)
     VerticalTextView mYear;
@@ -42,14 +39,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.test)
     TextView mTest;
 
-    //    private List<String> titles;
     private List<Diary> mDiaries;
-
-    private static Typeface sTypeface;
-    //    private LinearLayoutManager layoutManager;
     private DiariesAdapter mAdapter;
-
-//    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,42 +49,28 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initView();
-//        mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
     }
 
     @OnClick(R.id.test)
     public void test() {
 //        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
 //        if (isFirstTime) {
-            DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
+        DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
 //            SharedPreferences.Editor editor = mPreferences.edit();
 //            editor.putBoolean("isFirstTime", false);
 //            editor.apply();
-            updateRecyclerView();
+        updateRecyclerView();
 //        }
     }
 
     @DebugLog
     private void initView() {
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
-//            }
-//        }).start();
-
         final DateTime sDateTime = new DateTime();
-        sTypeface = FontUtils.getTypeface(this);
-        mYear.setTypeface(sTypeface);
-        mYear.setText(DateUtils.getChineseYear(sDateTime.getYear()));
-        mWrite.setTypeface(sTypeface);
-//        mTest.setTypeface(sTypeface);
-        mMonth.setTypeface(sTypeface);
+        applyFont(this);
+
+        mYear.setText("\n" + DateUtils.getChineseYear(sDateTime.getYear()));
         mMonth.setText(DateUtils.getChineseMonth(sDateTime.getMonthOfYear()));
-        mTest.setTypeface(sTypeface);
-//        titles = DbUtils.loadAllTitles();
-//        mAdapter = new DiariesAdapter(this, titles);
         mDiaries = DbUtils.loadAllDiaries();
         mAdapter = new DiariesAdapter(this, mDiaries);
 
@@ -124,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRecyclerView() {
-//        titles.clear();
-//        titles.addAll(DbUtils.loadAllTitles());
         mDiaries.clear();
         mDiaries.addAll(DbUtils.loadAllDiaries());
         mAdapter.notifyDataSetChanged();
@@ -140,14 +115,8 @@ public class MainActivity extends AppCompatActivity {
     class DiariesAdapter extends RecyclerView.Adapter<DiariesAdapter.ViewHolder> {
 
         private Context mContext;
-        //        private List<String> mTitles;
         private List<Diary> mDiaries;
         private ViewHolder mViewHolder;
-
-//        public DiariesAdapter(Context context, List<String> titles) {
-//            mContext = context;
-//            mTitles = titles;
-//        }
 
         public DiariesAdapter(Context context, List<Diary> diaries) {
             mContext = context;
@@ -165,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-//            holder.mTitle.setText(mTitles.get(position));
             holder.mTitle.setText(mDiaries.get(position).getTitle());
-            holder.mTitle.setTypeface(sTypeface);
+            changeFont(holder);
+        }
+
+        private void changeFont(ViewHolder holder) {
+            holder.mTitle.setTypeface(mTypeface);
         }
 
         @Override
@@ -191,16 +163,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int position = getAdapterPosition();
-//                final String title = mTitles.get(position);
 
                 final Diary diary = mDiaries.get(position);
 
                 Intent intent = new Intent(MainActivity.this, ViewActivity.class);
-//                intent.putExtra("TITLE", title);
                 intent.putExtra("DIARY", diary);
                 startActivity(intent);
             }
         }
+    }
 
+    @Override
+    public void applyFont(Context context) {
+        super.applyFont(context);
+        mYear.setTypeface(mTypeface);
+        mWrite.setTypeface(mTypeface);
+        mMonth.setTypeface(mTypeface);
+        mTest.setTypeface(mTypeface);
     }
 }
