@@ -9,17 +9,21 @@
     android:orientation="horizontal"
     tools:context=".activities.MainActivity">
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="10dp"
-        android:background="@drawable/text_wrapper"
-        android:gravity="center"
-        android:text="@string/test"
-        android:textColor="@color/bright_red"
-        android:textSize="@dimen/small_text_size"/>
+    <View
+        android:layout_width="52dp"
+        android:layout_height="match_parent" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/test"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:background="@drawable/text_wrapper"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/example"-->
+        <!--android:textColor="@color/bright_red"-->
+        <!--android:textSize="@dimen/small_text_size"/>-->
 
     <View
         android:layout_width="0dp"

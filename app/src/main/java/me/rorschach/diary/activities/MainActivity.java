@@ -2,6 +2,7 @@ package me.rorschach.diary.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
@@ -36,8 +36,8 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.diary_list)
     RecyclerView mDiaryList;
-    @Bind(R.id.test)
-    TextView mTest;
+//    @Bind(R.id.test)
+//    TextView mTest;
 
     private List<Diary> mDiaries;
     private DiariesAdapter mAdapter;
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
         initView();
     }
 
-    @OnClick(R.id.test)
+//    @OnClick(R.id.test)
     public void test() {
 //        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
 //        if (isFirstTime) {
@@ -65,6 +65,15 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     private void initView() {
+        SharedPreferences mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
+        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
+        if (isFirstTime) {
+            DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean("isFirstTime", false);
+            editor.apply();
+            updateRecyclerView();
+        }
 
         final DateTime sDateTime = new DateTime();
         applyFont(this);
@@ -179,6 +188,6 @@ public class MainActivity extends BaseActivity {
         mYear.setTypeface(mTypeface);
         mWrite.setTypeface(mTypeface);
         mMonth.setTypeface(mTypeface);
-        mTest.setTypeface(mTypeface);
+//        mTest.setTypeface(mTypeface);
     }
 }

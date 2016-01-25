@@ -10,7 +10,7 @@
     <string name="modify">改</string>
     <string name="delete">删</string>
     <string name="done">完</string>
-    <string name="test">测</string>
+    <string name="example">例</string>
 
     <string name="font_dialog_title">摇一摇更换字体</string>
     <!--<string name="dialog_message">确认要更换字体吗？</string>-->
