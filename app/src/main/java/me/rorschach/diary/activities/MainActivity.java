@@ -65,15 +65,7 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     private void initView() {
-        SharedPreferences mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
-        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
-        if (isFirstTime) {
-            DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putBoolean("isFirstTime", false);
-            editor.apply();
-            updateRecyclerView();
-        }
+
 
         final DateTime sDateTime = new DateTime();
         applyFont(this);
@@ -100,6 +92,16 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        SharedPreferences mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
+        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
+        if (isFirstTime) {
+            DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean("isFirstTime", false);
+            editor.apply();
+            updateRecyclerView();
+        }
     }
 
     @Override

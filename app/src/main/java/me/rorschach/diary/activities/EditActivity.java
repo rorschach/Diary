@@ -69,6 +69,8 @@ public class EditActivity extends BaseActivity {
         mTitle.setSelection(exampleTitle.length());
 
         mEnd.setText(exampleEnd);
+
+        mBody.requestFocus();
     }
 
     private void handleIntent() {
