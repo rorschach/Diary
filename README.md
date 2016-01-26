@@ -1,6 +1,6 @@
-# Diary
+# 小記
 
-A simple diary app in android
+A simple diary app in Android
 
 ![main screen](https://github.com/rorschach/Diary/raw/master/screenshots/main.png)
 
