@@ -12,7 +12,9 @@
 
 ![view_after screen](https://github.com/rorschach/Diary/raw/master/screenshots/view_after.png)
 
-   Copyright 2016, Rorschach <rorschach.lolipop@gmail.com>
+
+
+   Copyright (c) 2016, Rorschach <rorschach.lolipop@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
