@@ -2,6 +2,8 @@
 
 简单文艺的便签app, 仿iOS"小记"
 
+#### ScreenShots
+
 ![main screen](https://github.com/rorschach/Diary/raw/master/screenshots/main.png)
 
 ![edit screen](https://github.com/rorschach/Diary/raw/master/screenshots/edit.png)
@@ -13,8 +15,9 @@
 ![view_after screen](https://github.com/rorschach/Diary/raw/master/screenshots/view_after.png)
 
 
+#### LICENSE
 
-   Copyright (c) 2016, Rorschach <rorschach.lolipop@gmail.com>
+   Copyright (c) 2016, Rorschach <rorschach.loliopop@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

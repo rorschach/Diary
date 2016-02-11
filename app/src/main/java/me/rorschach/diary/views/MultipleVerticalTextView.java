@@ -187,16 +187,15 @@ public class MultipleVerticalTextView extends View {
         if (mLineWidth == 0) {
             paint.getTextWidths("正", widths);//获取单个汉字的宽度
             paint.getTextWidths(" ", space);
-//            mLineWidth = (int) widths[0];
 //            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2);
-            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2)
-                    + DisplayUtils.dp2px(getContext(), 2);
+            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2)  //获得字体宽度
+                    + DisplayUtils.dp2px(getContext(), 2);                  //增加间距
         }
 
         fm = paint.getFontMetrics();
 //        mFontHeight = (int) (Math.ceil(fm.descent - fm.top) * 0.9);// 获得字体高度
-        mFontHeight = (int) (Math.ceil(fm.descent - fm.ascent))
-                + DisplayUtils.dp2px(getContext(), 2);// 获得字体高度
+        mFontHeight = (int) (Math.ceil(fm.descent - fm.ascent)) // 获得字体高度
+                + DisplayUtils.dp2px(getContext(), 2);          //增加间距
         //计算文字行数
         mRealLine = 0;
         for (int i = 0; i < this.TextLength; i++) {
