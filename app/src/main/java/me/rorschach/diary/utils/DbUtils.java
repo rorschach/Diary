@@ -23,21 +23,9 @@ public class DbUtils {
 
     @DebugLog
     public static void addDiaries(List<Diary> diaries) {
-//        List<Diary> mDiaries = new ArrayList<>();
-//        Diary diary;
-//        DateTime time = new DateTime();
-//        for (int i = 0; i < 10; i++) {
-//            diary = new Diary("标题 | " + i, "BODY-" + i, "END-" + i,
-//                    time.getYear(), time.getMonthOfYear(), time.getDayOfMonth());
-//            diary.insert();
-//            mDiaries.add(diary);
-//        }
-//        return mDiaries;
-
         for (Diary diary : diaries) {
             diary.save();
         }
-
     }
 
     public static long countOfDiaries() {
@@ -114,7 +102,7 @@ public class DbUtils {
         }
         return titles;
     }
-//
+
 //    public static boolean isPresent(long id) {
 //        SQLite.select().from(Diary.class)
 //                .where(Diary_Table.id.eq(id))
