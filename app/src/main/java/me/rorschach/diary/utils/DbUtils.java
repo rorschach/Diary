@@ -102,12 +102,4 @@ public class DbUtils {
         }
         return titles;
     }
-
-//    public static boolean isPresent(long id) {
-//        SQLite.select().from(Diary.class)
-//                .where(Diary_Table.id.eq(id))
-//                .querySingle();
-//
-//        return true;
-//    }
 }

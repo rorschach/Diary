@@ -55,7 +55,6 @@ public class FontUtils {
     @DebugLog
     public static void setDefaultFont(Context context, String font) {
         if (!font.equals(getDefaultFont(context))) {
-//            FontUtils.defaultFont = font;
             SharedPreferences.Editor editor =
                     context.getSharedPreferences("setting", Context.MODE_PRIVATE).edit();
             editor.putString("fontFamily", font);

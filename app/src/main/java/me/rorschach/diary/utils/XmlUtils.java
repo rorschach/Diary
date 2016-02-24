@@ -73,8 +73,6 @@ public class XmlUtils {
     @DebugLog
     public static List<Diary> parserXml (Context context){
 
-//        XmlPullParser xpp = Xml.newPullParser();
-//        xpp.setInput(context.openFileInput("diaries.xml"), "utf-8");
         List<Diary> diaries = null;
         try {
             XmlPullParser xpp = context.getResources().getXml(R.xml.example);
@@ -121,8 +119,6 @@ public class XmlUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return diaries;
     }
-
 }
