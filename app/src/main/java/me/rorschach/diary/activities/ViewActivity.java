@@ -43,7 +43,6 @@ public class ViewActivity extends BaseActivity {
     @Bind(R.id.layout_container)
     FrameLayout mLayoutContainer;
 
-    //    private Typeface sTypeface;
     private Diary mDiary;
 
     private static boolean isHide = false;
@@ -56,7 +55,6 @@ public class ViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
         ButterKnife.bind(this);
-//        ButterKnife.bind(this);
 
         handleIntent(getIntent());
 
@@ -105,8 +103,6 @@ public class ViewActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ViewActivity.this, EditActivity.class);
                 intent.putExtra("DIARY", mDiary);
-//                startActivity(intent);
-
                 startActivityForResult(intent, 1);
             }
         });
