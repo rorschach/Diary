@@ -1,4 +1,4 @@
-package me.rorschach.diary.utils;
+package me.rorschach.diary.util;
 
 import android.content.Context;
 import android.util.Xml;
@@ -18,7 +18,7 @@ import me.rorschach.diary.bean.Diary;
 /**
  * Created by lei on 16-1-21.
  */
-public class XmlUtils {
+public class XmlUtil {
 
     @DebugLog
     public static void serializerXml(Context context) throws Exception {

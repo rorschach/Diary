@@ -1,4 +1,4 @@
-package me.rorschach.diary.views;
+package me.rorschach.diary.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,17 +9,16 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import me.rorschach.diary.R;
-import me.rorschach.diary.utils.DisplayUtils;
+import me.rorschach.diary.util.DisplayUtil;
 
 public class MultipleVerticalTextView extends View {
 
-    public static final int LAYOUT_CHANGED = 1;
+    //    public static final int LAYOUT_CHANGED = 1;
     private Paint paint;
     private int mTextPosX = 0;// x坐标
     private int mTextPosY = 0;// y坐标
@@ -30,15 +29,14 @@ public class MultipleVerticalTextView extends View {
     private int mRealLine = 0;// 字符串真实的行数
     private int mLineWidth = 0;//列宽度
     private int TextLength = 0;//字符串长度
-    private int oldWidth = 0;//存储旧的width
+    //    private int oldWidth = 0;//存储旧的width
     private String text = "";//待显示的文字
-    private Handler mHandler = null;
+//    private Handler mHandler = null;
 
     private static char ch;
     private static int h = 0;
     private static float[] widths = new float[1];
     private static float[] space = new float[1];
-    private static FontMetrics fm;
     private static int measuredHeight;
     private static int specMode;
     private static int specSize;
@@ -57,14 +55,14 @@ public class MultipleVerticalTextView extends View {
             float textSizePixel = typedArray.getDimension(
                     R.styleable.MultipleVerticalTextView_MultiTextSize,
                     getResources().getDimension(R.dimen.normal_text_size));
-            int textSizeSp = DisplayUtils.px2sp(context, textSizePixel);
-            mFontSize = DisplayUtils.sp2px(context, textSizeSp);
+            int textSizeSp = DisplayUtil.px2sp(context, textSizePixel);
+            mFontSize = DisplayUtil.sp2px(context, textSizeSp);
 
             boolean bold = typedArray.getBoolean(
                     R.styleable.MultipleVerticalTextView_MultiTextBold, false);
 
             mLineWidth = typedArray.getInteger(
-                    R.styleable.MultipleVerticalTextView_MultiTextLineWidth, 55);
+                    R.styleable.MultipleVerticalTextView_MultiTextLineWidth, 60);
 
             mFontHeight = typedArray.getInteger(
                     R.styleable.MultipleVerticalTextView_MultiTextFontHeight, 60);
@@ -78,19 +76,17 @@ public class MultipleVerticalTextView extends View {
     }
 
     private void setupPaint() {
-        paint = new Paint();//新建画笔
+        paint = new Paint();
         paint.setTextAlign(Align.CENTER);//文字居中
         paint.setAntiAlias(true);//平滑处理
-        paint.setColor(Color.BLACK);//默认文字颜色
-//        paint.setTypeface(FontUtils.getTypeface(getContext()));
+        paint.setColor(Color.BLACK);
     }
 
-    //设置文字
     public final void setText(String text) {
         this.text = text;
         this.TextLength = text.length();
         if (mTextHeight > 0) {
-            GetTextInfo();
+            CalculateText();
         }
         invalidate();
         requestLayout();
@@ -100,27 +96,23 @@ public class MultipleVerticalTextView extends View {
         return this.text;
     }
 
-    //设置字体大小
     public final void setTextSize(float size) {
         if (size != paint.getTextSize()) {
             mFontSize = size;
             if (mTextHeight > 0) {
-                GetTextInfo();
+                CalculateText();
             }
         }
     }
 
-    //设置字体颜色
     public final void setTextColor(int color) {
         paint.setColor(color);
     }
 
-    //设置字体颜色
     public final void setTextARGB(int a, int r, int g, int b) {
         paint.setARGB(a, r, g, b);
     }
 
-    //设置字体
     public void setTypeface(Typeface tf) {
         if (this.paint.getTypeface() != tf) {
             this.paint.setTypeface(tf);
@@ -129,19 +121,12 @@ public class MultipleVerticalTextView extends View {
         }
     }
 
-    //设置行宽
     public void setLineWidth(int LineWidth) {
         mLineWidth = LineWidth;
     }
 
-    //获取实际宽度
     public int getTextWidth() {
         return mTextWidth;
-    }
-
-    //设置Handler，用以发送事件
-    public void setHandler(Handler handler) {
-        mHandler = handler;
     }
 
     @Override
@@ -159,7 +144,7 @@ public class MultipleVerticalTextView extends View {
             ch = text.charAt(i);
             if (ch == '\n') {
                 mTextPosX -= mLineWidth;// 换列
-//                mTextPosX -= DisplayUtils.dp2px(getContext(), 2);
+//                mTextPosX -= DisplayUtil.dp2px(getContext(), 2);
                 mTextPosY = 0;
             } else {
                 mTextPosY += mFontHeight;
@@ -171,17 +156,15 @@ public class MultipleVerticalTextView extends View {
 //                    canvas.clipRect(getLeft(), getTop(), getLeft() + mTextWidth, getBottom());
 
                     canvas.drawText(String.valueOf(ch), mTextPosX, mTextPosY, paint);
-                    mTextPosY += DisplayUtils.dp2px(getContext(), 3);
+                    mTextPosY += DisplayUtil.dp2px(getContext(), 3);
                 }
             }
         }
 
-        //调用接口方法
-        //activity.getHandler().sendEmptyMessage(TestFontActivity.UPDATE);
     }
 
     //计算文字行数和总宽
-    private void GetTextInfo() {
+    private void CalculateText() {
         paint.setTextSize(mFontSize);
         //获得字宽
         if (mLineWidth == 0) {
@@ -189,13 +172,13 @@ public class MultipleVerticalTextView extends View {
             paint.getTextWidths(" ", space);
 //            mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2);
             mLineWidth = (int) Math.ceil((widths[0] + space[0]) * 1.1 + 2)  //获得字体宽度
-                    + DisplayUtils.dp2px(getContext(), 2);                  //增加间距
+                    + DisplayUtil.dp2px(getContext(), 2);                  //增加间距
         }
 
-        fm = paint.getFontMetrics();
+        FontMetrics fm = paint.getFontMetrics();
 //        mFontHeight = (int) (Math.ceil(fm.descent - fm.top) * 0.9);// 获得字体高度
         mFontHeight = (int) (Math.ceil(fm.descent - fm.ascent)) // 获得字体高度
-                + DisplayUtils.dp2px(getContext(), 2);          //增加间距
+                + DisplayUtil.dp2px(getContext(), 2);          //增加间距
         //计算文字行数
         mRealLine = 0;
         for (int i = 0; i < this.TextLength; i++) {
@@ -216,7 +199,7 @@ public class MultipleVerticalTextView extends View {
                 }
             }
         }
-        mRealLine++;//额外增加一行
+        mRealLine += 1;//额外增加一行
         mTextWidth = mLineWidth * mRealLine;//计算文字总宽度
         measure(mTextWidth, getHeight());//重新调整大小
         layout(getLeft(), getTop(), getLeft() + mTextWidth, getBottom());//重新绘制容器
@@ -224,18 +207,18 @@ public class MultipleVerticalTextView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        measuredHeight = measureHeight(heightMeasureSpec);
+        final int measuredHeight = measureHeight(heightMeasureSpec);
         if (mTextWidth == 0) {
-            GetTextInfo();
+            CalculateText();
         }
         setMeasuredDimension(mTextWidth, measuredHeight);
-        if (oldWidth != getWidth()) {//
-            oldWidth = getWidth();
-            if (mHandler != null) {
-                mHandler.sendEmptyMessage(LAYOUT_CHANGED);
-                mHandler = null;
-            }
-        }
+//        if (oldWidth != getWidth()) {//
+//            oldWidth = getWidth();
+//            if (mHandler != null) {
+//                mHandler.sendEmptyMessage(LAYOUT_CHANGED);
+//                mHandler = null;
+//            }
+//        }
     }
 
     private int measureHeight(int measureSpec) {

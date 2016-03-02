@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="horizontal"
-    tools:context=".activities.MainActivity">
+    tools:context=".activity.MainActivity">
 
     <View
         android:layout_width="52dp"
@@ -51,7 +51,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <me.rorschach.diary.views.VerticalTextView
+        <me.rorschach.diary.view.VerticalTextView
             android:id="@+id/year"
             style="@style/DiaryBodyStyle"
             android:layout_width="32dp"
@@ -72,7 +72,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/small_text_size"/>
 
-        <me.rorschach.diary.views.VerticalTextView
+        <me.rorschach.diary.view.VerticalTextView
             android:id="@+id/month"
             style="@style/DiaryBodyStyle"
             android:layout_width="32dp"

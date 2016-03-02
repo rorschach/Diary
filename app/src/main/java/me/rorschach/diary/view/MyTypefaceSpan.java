@@ -1,4 +1,4 @@
-package me.rorschach.diary.views;
+package me.rorschach.diary.view;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;

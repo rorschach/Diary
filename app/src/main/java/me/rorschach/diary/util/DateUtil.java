@@ -1,4 +1,4 @@
-package me.rorschach.diary.utils;
+package me.rorschach.diary.util;
 
 import java.util.HashMap;
 
@@ -7,7 +7,7 @@ import hugo.weaving.DebugLog;
 /**
  * Created by lei on 16-1-18.
  */
-public class DateUtils {
+public class DateUtil {
 
     public static final String YEAR_IN_CHINESE = "年";
     public static final String MONTH_IN_CHINESE = "月";

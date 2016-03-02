@@ -1,4 +1,4 @@
-package me.rorschach.diary.activities;
+package me.rorschach.diary.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
-import me.rorschach.diary.utils.DateUtils;
-import me.rorschach.diary.utils.DbUtils;
-import me.rorschach.diary.utils.XmlUtils;
-import me.rorschach.diary.views.VerticalTextView;
+import me.rorschach.diary.util.DateUtil;
+import me.rorschach.diary.util.DbUtil;
+import me.rorschach.diary.util.XmlUtil;
+import me.rorschach.diary.view.VerticalTextView;
 
 public class MainActivity extends BaseActivity {
 
@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
     public void test() {
 //        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
 //        if (isFirstTime) {
-        DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
+        DbUtil.addDiaries(XmlUtil.parserXml(MainActivity.this));
 //            SharedPreferences.Editor editor = mPreferences.edit();
 //            editor.putBoolean("isFirstTime", false);
 //            editor.apply();
@@ -70,9 +70,9 @@ public class MainActivity extends BaseActivity {
         final DateTime sDateTime = new DateTime();
         applyFont(this);
 
-        mYear.setText("\n" + DateUtils.getChineseYear(sDateTime.getYear()));
-        mMonth.setText(DateUtils.getChineseMonth(sDateTime.getMonthOfYear()));
-        mDiaries = DbUtils.loadAllDiaries();
+        mYear.setText("\n" + DateUtil.getChineseYear(sDateTime.getYear()));
+        mMonth.setText(DateUtil.getChineseMonth(sDateTime.getMonthOfYear()));
+        mDiaries = DbUtil.loadAllDiaries();
         mAdapter = new DiariesAdapter(this, mDiaries);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
         SharedPreferences mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
         boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
         if (isFirstTime) {
-            DbUtils.addDiaries(XmlUtils.parserXml(MainActivity.this));
+            DbUtil.addDiaries(XmlUtil.parserXml(MainActivity.this));
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean("isFirstTime", false);
             editor.apply();
@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity {
 
     private void updateRecyclerView() {
         mDiaries.clear();
-        mDiaries.addAll(DbUtils.loadAllDiaries());
+        mDiaries.addAll(DbUtil.loadAllDiaries());
         mAdapter.notifyDataSetChanged();
         mDiaryList.post(new Runnable() {
             @Override

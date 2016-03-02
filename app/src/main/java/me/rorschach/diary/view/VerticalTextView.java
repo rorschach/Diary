@@ -1,4 +1,4 @@
-package me.rorschach.diary.views;
+package me.rorschach.diary.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -34,7 +34,7 @@ public class VerticalTextView extends TextView {
             return;
         }
 
-//        FontUtils.applyFont(context, this);
+//        FontUtil.applyFont(context, this);
 //
 //        TypedArray ta = context.getTheme()
 //                .obtainStyledAttributes(attrs, R.styleable.VerticalTextView, 0, 0);

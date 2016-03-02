@@ -1,4 +1,4 @@
-package me.rorschach.diary.activities;
+package me.rorschach.diary.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,9 +15,9 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
-import me.rorschach.diary.utils.DateUtils;
-import me.rorschach.diary.views.MultipleVerticalTextView;
-import me.rorschach.diary.views.VerticalTextView;
+import me.rorschach.diary.util.DateUtil;
+import me.rorschach.diary.view.MultipleVerticalTextView;
+import me.rorschach.diary.view.VerticalTextView;
 
 public class ViewActivity extends BaseActivity {
 
@@ -41,7 +40,7 @@ public class ViewActivity extends BaseActivity {
     @Bind(R.id.point_container)
     LinearLayout mPointContainer;
     @Bind(R.id.layout_container)
-    FrameLayout mLayoutContainer;
+    LinearLayout mLayoutContainer;
 
     private Diary mDiary;
 
@@ -69,7 +68,7 @@ public class ViewActivity extends BaseActivity {
             this.finish();
         }
         mTitle.setText(mDiary.getTitle());
-        mDate.setText(DateUtils.getChineseDate(
+        mDate.setText(DateUtil.getChineseDate(
                 mDiary.getYear(), mDiary.getMonth(), mDiary.getDay()));
         mEnd.setText(mDiary.getEnd());
         mBody.setText(mDiary.getBody());

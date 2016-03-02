@@ -1,4 +1,4 @@
-package me.rorschach.diary.utils;
+package me.rorschach.diary.util;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -9,7 +9,7 @@ import android.view.WindowManager;
 /**
  * Created by lei on 16-1-20.
  */
-public class DisplayUtils {
+public class DisplayUtil {
 
     private static int screenWidth = 0;
     private static int screenHeight = 0;

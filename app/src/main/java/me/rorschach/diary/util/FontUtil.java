@@ -1,4 +1,4 @@
-package me.rorschach.diary.utils;
+package me.rorschach.diary.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ import hugo.weaving.DebugLog;
 /**
  * Created by lei on 16-1-20.
  */
-public class FontUtils {
+public class FontUtil {
 
     private static boolean isQingyue = true;
 

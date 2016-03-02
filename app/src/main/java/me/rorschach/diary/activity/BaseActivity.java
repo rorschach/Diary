@@ -1,4 +1,4 @@
-package me.rorschach.diary.activities;
+package me.rorschach.diary.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.IFont;
 import me.rorschach.diary.R;
-import me.rorschach.diary.utils.FontUtils;
+import me.rorschach.diary.util.FontUtil;
 
 /**
  * Created by lei on 16-1-23.
@@ -84,7 +84,7 @@ public class BaseActivity extends AppCompatActivity implements IFont {
     @DebugLog
     protected void onPause() {
         super.onPause();
-//        FontUtils.getTypeface(this);
+//        FontUtil.getTypeface(this);
         if (mSensor != null) {
             mSensorManager.unregisterListener(mListener);
         }
@@ -128,7 +128,7 @@ public class BaseActivity extends AppCompatActivity implements IFont {
             if (Math.abs(x) >= 10 || Math.abs(y) >= 10 || Math.abs(z) >= 10) {
                 if (!mDialog.isShowing()) {
                     mDialog.setMessage(getResources().getString(R.string.font_dialog_message)
-                            + FontUtils.getFontName(BaseActivity.this));
+                            + FontUtil.getFontName(BaseActivity.this));
                     mDialog.show();
                 } else {
                     return;
@@ -147,7 +147,7 @@ public class BaseActivity extends AppCompatActivity implements IFont {
         builder.setTitle(R.string.font_dialog_title);
         builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                FontUtils.changeFont(BaseActivity.this);
+                FontUtil.changeFont(BaseActivity.this);
                 applyFont(BaseActivity.this);
             }
         });
@@ -162,6 +162,6 @@ public class BaseActivity extends AppCompatActivity implements IFont {
     @Override
     @DebugLog
     public void applyFont(Context context) {
-        mTypeface = FontUtils.getTypeface(this);
+        mTypeface = FontUtil.getTypeface(this);
     }
 }

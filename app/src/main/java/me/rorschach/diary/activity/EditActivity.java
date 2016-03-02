@@ -1,4 +1,4 @@
-package me.rorschach.diary.activities;
+package me.rorschach.diary.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
-import me.rorschach.diary.utils.DateUtils;
+import me.rorschach.diary.util.DateUtil;
 
 public class EditActivity extends BaseActivity {
 
@@ -62,7 +62,7 @@ public class EditActivity extends BaseActivity {
 
         mDateTime = new DateTime();
 
-        exampleTitle = DateUtils.othersToChinese(mDateTime.getDayOfMonth()) + "日";
+        exampleTitle = DateUtil.othersToChinese(mDateTime.getDayOfMonth()) + "日";
         exampleEnd = getResources().getString(R.string.example_end);
 
         mTitle.setText(exampleTitle);

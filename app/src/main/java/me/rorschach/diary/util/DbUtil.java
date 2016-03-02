@@ -1,4 +1,4 @@
-package me.rorschach.diary.utils;
+package me.rorschach.diary.util;
 
 import com.raizlabs.android.dbflow.runtime.DBTransactionInfo;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
@@ -19,7 +19,7 @@ import me.rorschach.diary.bean.Diary_Table;
 /**
  * Created by lei on 16-1-18.
  */
-public class DbUtils {
+public class DbUtil {
 
     @DebugLog
     public static void addDiaries(List<Diary> diaries) {
