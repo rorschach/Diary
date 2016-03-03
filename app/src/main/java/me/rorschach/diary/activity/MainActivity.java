@@ -50,9 +50,9 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
 
             if (msg.what == 0x01) {
-                Toast.makeText(MainActivity.this, "export success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "备份成功", Toast.LENGTH_SHORT).show();
             } else if (msg.what == 0x02) {
-                Toast.makeText(MainActivity.this, "import success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "还原成功", Toast.LENGTH_SHORT).show();
             }
         }
     };
