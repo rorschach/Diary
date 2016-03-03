@@ -9,21 +9,22 @@
     android:orientation="horizontal"
     tools:context=".activity.MainActivity">
 
-    <View
-        android:layout_width="52dp"
-        android:layout_height="match_parent" />
-
-    <!--<TextView-->
+    <!--<View-->
         <!--android:id="@+id/test"-->
-        <!--android:layout_width="32dp"-->
-        <!--android:layout_height="32dp"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:background="@drawable/text_wrapper"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/example"-->
-        <!--android:textColor="@color/bright_red"-->
-        <!--android:textSize="@dimen/small_text_size"/>-->
+        <!--android:layout_width="52dp"-->
+        <!--android:layout_height="match_parent" />-->
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:background="@drawable/text_wrapper"
+        android:gravity="center"
+        android:text="文"
+        android:textColor="@color/bright_red"
+        android:textSize="@dimen/small_text_size"/>
 
     <View
         android:layout_width="0dp"

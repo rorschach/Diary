@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -17,12 +21,14 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
 import me.rorschach.diary.util.DateUtil;
 import me.rorschach.diary.util.DbUtil;
-import me.rorschach.diary.util.XmlUtil;
+import me.rorschach.diary.util.IOUtil;
 import me.rorschach.diary.view.VerticalTextView;
 
 public class MainActivity extends BaseActivity {
@@ -36,8 +42,20 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.diary_list)
     RecyclerView mDiaryList;
-//    @Bind(R.id.test)
-//    TextView mTest;
+    @Bind(R.id.test)
+    TextView mTest;
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what == 0x01) {
+                Toast.makeText(MainActivity.this, "export success", Toast.LENGTH_SHORT).show();
+            } else if (msg.what == 0x02) {
+                Toast.makeText(MainActivity.this, "import success", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     private List<Diary> mDiaries;
     private DiariesAdapter mAdapter;
@@ -51,16 +69,30 @@ public class MainActivity extends BaseActivity {
         initView();
     }
 
-//    @OnClick(R.id.test)
-    public void test() {
-//        boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
-//        if (isFirstTime) {
-        DbUtil.addDiaries(XmlUtil.parserXml(MainActivity.this));
-//            SharedPreferences.Editor editor = mPreferences.edit();
-//            editor.putBoolean("isFirstTime", false);
-//            editor.apply();
-        updateRecyclerView();
-//        }
+    @OnClick(R.id.test)
+    public void testExport() {
+        Log.d("TAG", "testExport");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                IOUtil.backupDiaries();
+                mHandler.obtainMessage(0x01).sendToTarget();
+            }
+        }).start();
+    }
+
+    @OnLongClick(R.id.test)
+    public boolean testImport() {
+        Log.d("TAG", "testImport");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Diary> diaries = IOUtil.importBackup();
+                Log.d("TAG", diaries.toString());
+                mHandler.obtainMessage(0x02).sendToTarget();
+            }
+        }).start();
+        return true;
     }
 
     @DebugLog
@@ -96,7 +128,7 @@ public class MainActivity extends BaseActivity {
         SharedPreferences mPreferences = getSharedPreferences("setting", MODE_PRIVATE);
         boolean isFirstTime = mPreferences.getBoolean("isFirstTime", true);
         if (isFirstTime) {
-            DbUtil.addDiaries(XmlUtil.parserXml(MainActivity.this));
+            DbUtil.addDiaries(IOUtil.importSamples(MainActivity.this));
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean("isFirstTime", false);
             editor.apply();
@@ -190,6 +222,6 @@ public class MainActivity extends BaseActivity {
         mYear.setTypeface(mTypeface);
         mWrite.setTypeface(mTypeface);
         mMonth.setTypeface(mTypeface);
-//        mTest.setTypeface(mTypeface);
+        mTest.setTypeface(mTypeface);
     }
 }
