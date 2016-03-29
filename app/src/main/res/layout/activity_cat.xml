@@ -10,7 +10,7 @@
              android:paddingRight="4dp"
              android:paddingTop="15dp"
               android:orientation="vertical"
-             tools:context=".activity.ViewActivity">
+             tools:context=".activity.CatActivity">
 
         <HorizontalScrollView
             android:id="@+id/horizontal_container"

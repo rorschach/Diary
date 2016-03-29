@@ -2,16 +2,27 @@ package me.rorschach.diary.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
@@ -19,7 +30,7 @@ import me.rorschach.diary.util.DateUtil;
 import me.rorschach.diary.view.MultipleVerticalTextView;
 import me.rorschach.diary.view.VerticalTextView;
 
-public class ViewActivity extends BaseActivity {
+public class CatActivity extends BaseActivity {
 
     @Bind(R.id.title)
     VerticalTextView mTitle;
@@ -52,7 +63,7 @@ public class ViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
+        setContentView(R.layout.activity_cat);
         ButterKnife.bind(this);
 
         handleIntent(getIntent());
@@ -84,7 +95,7 @@ public class ViewActivity extends BaseActivity {
 //            public boolean onLongClick(View v) {
 //                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 //                cm.setText(mBody.getText());
-//                Toast.makeText(ViewActivity.this, "copy the content", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CatActivity.this, "copy the content", Toast.LENGTH_SHORT).show();
 //                return true;
 //            }
 //        });
@@ -100,24 +111,89 @@ public class ViewActivity extends BaseActivity {
         mModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewActivity.this, EditActivity.class);
+                Intent intent = new Intent(CatActivity.this, EditActivity.class);
                 intent.putExtra("DIARY", mDiary);
                 startActivityForResult(intent, 1);
             }
         });
-        mSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewActivity.this.finish();
-            }
-        });
+//        mSave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CatActivity.this.finish();
+//            }
+//        });
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewActivity.this.finish();
+                CatActivity.this.finish();
                 mDiary.delete();
             }
         });
+    }
+
+    @OnClick(R.id.save)
+    public void saveImage() {
+
+        Toast.makeText(this, "开始截屏", Toast.LENGTH_SHORT).show();
+
+
+        DisplayMetrics display = this.getResources().getDisplayMetrics();
+        int width = display.widthPixels;
+        int height = display.heightPixels;
+
+//        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        View decorView = getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+
+        Bitmap bitmap1 = decorView.getDrawingCache();
+
+        Rect rect = new Rect();
+        decorView.getWindowVisibleDisplayFrame(rect);
+        int statusBarHeight = rect.top;
+
+        Bitmap bitmap2 = Bitmap.createBitmap(bitmap1,
+                0, statusBarHeight, width, height - statusBarHeight);
+
+//        decorView.setDrawingCacheEnabled(false);
+
+        File filePath = new File(
+                Environment.getExternalStorageDirectory().getPath() + "/image");
+
+        if(!filePath.exists()){
+            filePath.mkdir();
+        }
+
+        FileOutputStream fos = null;
+
+        File file = null;
+        try {
+
+            file = new File(filePath + "/test.png");
+            file.createNewFile();
+
+            fos = new FileOutputStream(file);
+
+            bitmap2.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.flush();
+
+            Toast.makeText(this, "截屏成功！", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(fos != null){
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/png");
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        startActivity(Intent.createChooser(intent, ""));
     }
 
     @Override
@@ -181,6 +257,7 @@ public class ViewActivity extends BaseActivity {
     @Override
     public void applyFont(Context context) {
         super.applyFont(context);
+
         mTitle.setTypeface(mTypeface);
         mBody.setTypeface(mTypeface);
         mDate.setTypeface(mTypeface);
@@ -188,6 +265,7 @@ public class ViewActivity extends BaseActivity {
         mSave.setTypeface(mTypeface);
         mModify.setTypeface(mTypeface);
         mDelete.setTypeface(mTypeface);
+
     }
 
     @Override

@@ -44,10 +44,20 @@ public class MultipleVerticalTextView extends View {
 
     public MultipleVerticalTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(context, attrs);
     }
 
     public MultipleVerticalTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+
+        if(isInEditMode()){
+            return;
+        }
+
         setupPaint();
         TypedArray typedArray = context.getTheme()
                 .obtainStyledAttributes(attrs, R.styleable.MultipleVerticalTextView, 0, 0);

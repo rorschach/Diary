@@ -89,7 +89,7 @@ public class EditActivity extends BaseActivity {
     }
 
     @OnClick(R.id.done)
-    public void trySaveDiary() {
+    public void trySave() {
         switch (checkInput()) {
 
             case NO_TITLE:
@@ -116,14 +116,14 @@ public class EditActivity extends BaseActivity {
             case INSERT_DIARY:
             case UPDATE_DIARY:
             case OTHER:
-                saveDiary();
+                doSave();
                 super.onBackPressed();
                 break;
         }
     }
 
     @DebugLog
-    public void saveDiary() {
+    public void doSave() {
 
         if (TextUtils.isEmpty(mBody.getText().toString())) {
             mBody.setText(" ");
@@ -185,7 +185,7 @@ public class EditActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        trySaveDiary();
+        trySave();
     }
 
     @Override

@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity {
 
                 final Diary diary = mDiaries.get(position);
 
-                Intent intent = new Intent(MainActivity.this, ViewActivity.class);
+                Intent intent = new Intent(MainActivity.this, CatActivity.class);
                 intent.putExtra("DIARY", diary);
                 startActivity(intent);
             }
@@ -223,5 +223,17 @@ public class MainActivity extends BaseActivity {
         mWrite.setTypeface(mTypeface);
         mMonth.setTypeface(mTypeface);
         mTest.setTypeface(mTypeface);
+
+//        final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this
+//                .findViewById(android.R.id.content)).getChildAt(0);
+//
+//        int childViewCounts = viewGroup.getChildCount();
+//
+//        for (int i = 0; i < childViewCounts; i++) {
+//            if(viewGroup.getChildAt(i) instanceof TextView){
+//                ((TextView) viewGroup.getChildAt(i)).setTypeface(mTypeface);
+//            }
+//        }
+//
     }
 }
