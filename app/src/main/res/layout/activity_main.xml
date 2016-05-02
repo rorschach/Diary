@@ -9,29 +9,45 @@
     android:orientation="horizontal"
     tools:context=".activity.MainActivity">
 
-    <!--<View-->
-        <!--android:id="@+id/test"-->
-        <!--android:layout_width="52dp"-->
-        <!--android:layout_height="match_parent" />-->
+    <LinearLayout
+        android:layout_width="42dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="10dp"
-        android:background="@drawable/text_wrapper"
-        android:gravity="center"
-        android:text="文"
-        android:textColor="@color/bright_red"
-        android:textSize="@dimen/small_text_size"/>
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-    <View
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/text_wrapper"
+            android:gravity="center"
+            android:text="存"
+            android:textColor="@color/bright_red"
+            android:textSize="@dimen/small_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_load"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/text_wrapper"
+            android:gravity="center"
+            android:text="载"
+            android:textColor="@color/bright_red"
+            android:textSize="@dimen/small_text_size"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="160dp"
-        android:layout_weight="1"
-        android:background="@null"/>
+        android:layout_weight="1"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/diary_list"

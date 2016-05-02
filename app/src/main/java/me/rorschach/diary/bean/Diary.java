@@ -9,23 +9,23 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
- * Created by lei on 16-1-18.
+ * 实体类，每一个对象都是一篇便签
  */
-@Table(database = DiaryDb.class)
+@Table(database = DiaryDb.class)        //数据库信息由DiaryDb这个类定义
 public class Diary extends BaseModel implements Parcelable {
 
-    @Column
-    @PrimaryKey(autoincrement = true)
-    private long id;
+    @Column                             //列
+    @PrimaryKey(autoincrement = true)   //设置为主键并且自增长
+    private long id;                    //便签的id
 
     @Column
-    private String title;
+    private String title;               //标题
 
     @Column
-    private String body;
+    private String body;                //正文
 
     @Column
-    private String end;
+    private String end;                 //结尾
 
     @Column
     private int year;
@@ -36,9 +36,11 @@ public class Diary extends BaseModel implements Parcelable {
     @Column
     private int day;
 
+    //提供一个空的构造方法
     public Diary() {
     }
 
+    //带参数的构造方法，因为id自增长，因此不需要设置id
     public Diary(String title, String body, String end, int year, int month, int day) {
         this.title = title;
         this.body = body;
@@ -47,6 +49,8 @@ public class Diary extends BaseModel implements Parcelable {
         this.month = month;
         this.day = day;
     }
+
+    //getter setter方法，用于设置和获取便签的信息
 
     public long getId() {
         return id;
@@ -110,6 +114,8 @@ public class Diary extends BaseModel implements Parcelable {
                 + ", title - " + title + ", body - " + body + ", end - " + end
                 + ", year - " + year + ", month - " + month + ", day - " + day + "]\n";
     }
+
+    //后面的不需要了解
 
     @Override
     public int describeContents() {

@@ -17,10 +17,14 @@ import me.rorschach.diary.bean.Diary_Table;
 
 
 /**
- * Created by lei on 16-1-18.
+ * 数据库工具类，封装数据库操作
  */
 public class DbUtil {
 
+    /**
+     * 添加列表中的所有便签
+     * @param diaries   便签列表
+     */
     @DebugLog
     public static void addDiaries(List<Diary> diaries) {
         for (Diary diary : diaries) {
@@ -71,6 +75,10 @@ public class DbUtil {
                 .queryList();
     }
 
+    /**
+     * 加载所有的便签
+     * @return  便签列表
+     */
     @DebugLog
     public static List<Diary> loadAllDiaries() {
         return SQLite.select().from(Diary.class).queryList();

@@ -32,6 +32,7 @@ import me.rorschach.diary.view.VerticalTextView;
 
 public class CatActivity extends BaseActivity {
 
+    //根据xml文件中的id，使用插件生成视图对象
     @Bind(R.id.title)
     VerticalTextView mTitle;
     @Bind(R.id.body)
@@ -53,54 +54,63 @@ public class CatActivity extends BaseActivity {
     @Bind(R.id.layout_container)
     LinearLayout mLayoutContainer;
 
+    //当前页面对应的便签实体对象
     private Diary mDiary;
 
+    //默认红点为隐藏状态
     private static boolean isHide = false;
 
     private static AccelerateInterpolator ACCE_INTERPOLATOR = new AccelerateInterpolator();
     private static OvershootInterpolator OVER_INTERPOLATOR = new OvershootInterpolator();
 
+    /**
+     * 生命周期回调，页面创建时启动
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat);
         ButterKnife.bind(this);
 
+        //处理收到的intent
         handleIntent(getIntent());
 
+        //初始化视图
         initView();
     }
 
+    /**
+     * 处理其他页面的请求的方法
+     * @param intent
+     */
     @DebugLog
     private void handleIntent(Intent intent) {
+
+        //从intent中取出"DIARY"对应的数据，赋值给便签的实体对象
         mDiary = intent.getParcelableExtra("DIARY");
 
+        //若赋值后便签仍然为空，则结束当前Activity
         if (mDiary == null) {
             this.finish();
         }
-        mTitle.setText(mDiary.getTitle());
+
+        //不为空的话，将便签的属性显示到文本上
+        mTitle.setText(mDiary.getTitle());  //显示标题
+        //显示中文时间
         mDate.setText(DateUtil.getChineseDate(
                 mDiary.getYear(), mDiary.getMonth(), mDiary.getDay()));
-        mEnd.setText(mDiary.getEnd());
-        mBody.setText(mDiary.getBody());
+        mEnd.setText(mDiary.getEnd());  //显示结尾
+        mBody.setText(mDiary.getBody());    //显示正文
     }
 
+    /**
+     * 初始化各个视图的属性
+     */
     @DebugLog
     private void initView() {
 
-
-//        mEnd.setTextIsSelectable(true);
-//        mBody.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-//                cm.setText(mBody.getText());
-//                Toast.makeText(CatActivity.this, "copy the content", Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
-
-
+        //正文部分的点击事件，点击后显示/隐藏红点按钮
         mBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,28 +118,39 @@ public class CatActivity extends BaseActivity {
             }
         });
 
+        //点击"改"后，跳转编辑页面
         mModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //新建一个Intent，声明要从CatActivity到EditActivity
                 Intent intent = new Intent(CatActivity.this, EditActivity.class);
+                //intente携带的参数为当前的便签
                 intent.putExtra("DIARY", mDiary);
+
+                //发送一个期望收到结果的意图，请求码为1
                 startActivityForResult(intent, 1);
             }
         });
-//        mSave.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CatActivity.this.finish();
-//            }
-//        });
+
+        //点击"存"后，结束当前页面
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CatActivity.this.finish();
+            }
+        });
+
+        //点击"删"后，结束当前页面，并删除当前的便签
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CatActivity.this.finish();
-                mDiary.delete();
+                mDiary.delete();        //删除当前便签
             }
         });
     }
+
 
     @OnClick(R.id.save)
     public void saveImage() {
@@ -196,6 +217,12 @@ public class CatActivity extends BaseActivity {
         startActivity(Intent.createChooser(intent, ""));
     }
 
+    /**
+     * 使用Intent启动另外一个页面，另一个页面返回消息后调用这个方法
+     * @param requestCode   请求码，请求方提供
+     * @param resultCode    响应码，返回的值
+     * @param data          携带数据的intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -203,13 +230,16 @@ public class CatActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 将三个红点使用动画效果显示和隐藏
+     */
     private void animatePointers() {
-        isHide = !isHide;
-        if (isHide) {
-            mModify.animate()
-                    .translationY(mModify.getHeight() * 2)
-                    .setDuration(300)
-                    .setInterpolator(ACCE_INTERPOLATOR);
+        isHide = !isHide;           //将红点的显示状态取反
+        if (isHide) {               //若要隐藏
+            mModify.animate()       //开始动画
+                    .translationY(mModify.getHeight() * 2)      //向上平移红点自身高度的２倍距离
+                    .setDuration(300)       //设置动画时间为300ms
+                    .setInterpolator(ACCE_INTERPOLATOR);        //设置为加速度增加的动画
 
             mSave.animate()
                     .translationY(mSave.getHeight() * 2)
@@ -225,9 +255,9 @@ public class CatActivity extends BaseActivity {
                     .start();
         } else {
             mModify.animate()
-                    .translationY(0)
+                    .translationY(0)        //移动到原来的位置
                     .setDuration(300)
-                    .setInterpolator(OVER_INTERPOLATOR);
+                    .setInterpolator(OVER_INTERPOLATOR);    //设置为带回弹效果的动画
 
             mSave.animate()
                     .translationY(0)
@@ -244,6 +274,9 @@ public class CatActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 滚动列表到最右侧，显示最新的便签
+     */
     private void scrollPage() {
         mHorizontalScrollView.post(new Runnable() {
             @Override
@@ -253,6 +286,10 @@ public class CatActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 将所有的文本字体设置为更改后的字体
+     * @param context 上下文
+     */
     @DebugLog
     @Override
     public void applyFont(Context context) {
@@ -265,19 +302,20 @@ public class CatActivity extends BaseActivity {
         mSave.setTypeface(mTypeface);
         mModify.setTypeface(mTypeface);
         mDelete.setTypeface(mTypeface);
-
     }
 
+    /**
+     * 当当前页面可见时被调用
+     */
     @Override
     protected void onResume() {
         super.onResume();
-        scrollPage();
+        scrollPage();       //将便签列表滚动到最右侧，显示最新的便签
     }
 
     @Override
     protected void onPause() {
         super.onPause();
     }
-
 
 }
