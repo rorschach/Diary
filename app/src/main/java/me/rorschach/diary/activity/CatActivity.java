@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
@@ -152,7 +151,7 @@ public class CatActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.save)
+//    @OnClick(R.id.save)
     public void saveImage() {
 
         Toast.makeText(this, "开始截屏", Toast.LENGTH_SHORT).show();

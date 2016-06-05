@@ -1,6 +1,7 @@
 package me.rorschach.diary.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import me.rorschach.diary.R;
 import me.rorschach.diary.bean.Diary;
+import me.rorschach.diary.util.ActivityUtil;
 import me.rorschach.diary.util.DateUtil;
 import me.rorschach.diary.util.DbUtil;
 import me.rorschach.diary.util.IOUtil;
@@ -80,26 +82,54 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.tv_save)
     public void saveAllToFile() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (IOUtil.backupDiaries()) {
-                    mHandler.obtainMessage(0x01).sendToTarget();
-                }
-            }
-        }).start();
+
+        ActivityUtil.showDialog(this, "备份所有便签数据", "确认要备份吗？",
+                "备份", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (IOUtil.backupDiaries()) {
+                                    mHandler.obtainMessage(0x01).sendToTarget();
+                                }
+                            }
+                        }).start();
+                    }
+                },
+                "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+
     }
 
     @OnClick(R.id.tv_load)
     public void loadAllFromFile() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Diary> diaries = IOUtil.importBackup();
-                DbUtil.addDiaries(diaries);
-                mHandler.obtainMessage(0x02).sendToTarget();
-            }
-        }).start();
+
+        ActivityUtil.showDialog(this, "还原所有便签数据", "确定要还原吗？",
+                "还原", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<Diary> diaries = IOUtil.importBackup();
+                                DbUtil.addDiaries(diaries);
+                                mHandler.obtainMessage(0x02).sendToTarget();
+                            }
+                        }).start();
+                    }
+                },
+                "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
     }
 
     @DebugLog
